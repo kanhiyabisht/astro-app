@@ -2,15 +2,16 @@ package com.example.astrodashalib.service
 
 import com.example.astrodashalib.model.*
 import com.example.astrodashalib.model.response.*
-import retrofit2.http.Body
-import retrofit2.http.Header
-import retrofit2.http.POST
+import retrofit2.http.*
 import rx.Observable
 
 interface DashaService{
 
+    @GET("/getAllPlaces/{search_text}/{countryCode}")
+    fun searchPlaces(@Path(value = "search_text", encoded = true) searchText: String, @Path("countryCode") countryCode: String="Ind."): Observable<List<Place>>
+
     @POST("/generateNew")
-    fun getMahaDashaResponse(@Header("merchantKey") merchantKey: String, @Header("key") secretValue: String, @Body kundliRequestBody: GenerateNewRequestBody, @Header("user_id") userId: String): Observable<GenerateNewResponse>
+    fun getMahaDashaResponse(@Header("merchantKey") merchantKey: String, @Header("key") secretValue: String, @Body kundliRequestBody: GenerateNewRequestBody): Observable<GenerateNewResponse>
 
     @POST("/getCurrentMahadashaFal")
     fun getCurrentMahadashaFalText(@Header("merchantKey") merchantKey: String, @Header("key") secretValue: String, @Body currentMahadashaFalRequestBody: CurrentMahadashaFalRequestBody): Observable<CurrentMahadashaFalResponse>

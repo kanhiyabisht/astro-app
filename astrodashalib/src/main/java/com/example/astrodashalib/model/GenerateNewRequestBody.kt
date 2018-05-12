@@ -1,22 +1,45 @@
 package com.example.astrodashalib.model
 
 import com.google.gson.annotations.SerializedName
-
 import java.io.Serializable
 
-class GenerateNewRequestBody(@field:SerializedName("place_name")
-                             var placeName: String, @field:SerializedName("day")
-                             var day: String, @field:SerializedName("month")
-                             var month: String, @field:SerializedName("year")
-                             var year: String, @field:SerializedName("hour")
-                             var hour: String, @field:SerializedName("minute")
-                             var minute: String, @field:SerializedName("tz")
-                             var tz: String, @field:SerializedName("timezone")
-                             var timezone: String, @field:SerializedName("latitude")
-                             var latitude: String, @field:SerializedName("lon")
-                             var lon: String, @field:SerializedName("lat")
-                             var lat: String, @field:SerializedName("longitude")
-                             var longitude: String, ayan: String, combocat: String, language: String, cmbRotate: Int, txtAge: Int, chk72: Boolean, chkInclude: Boolean, chkShowRef: Boolean, name: String, comboProd: String, relationshipCode: Int) : Serializable {
+class GenerateNewRequestBody : Serializable {
+
+    @SerializedName("place_name")
+    var placeName: String = ""
+
+    @SerializedName("day")
+    var day: String = ""
+
+    @SerializedName("month")
+    var month: String = ""
+
+    @SerializedName("year")
+    var year: String = ""
+
+    @SerializedName("hour")
+    var hour: String = ""
+
+    @SerializedName("minute")
+    var minute: String = ""
+
+    @SerializedName("tz")
+    var tz: String = "82.30E"
+
+    @SerializedName("timezone")
+    var timezone: String = "82.30"
+
+    @SerializedName("latitude")
+    var latitude: String = ""
+
+    @SerializedName("lon")
+    var lon: String = ""
+
+    @SerializedName("lat")
+    var lat: String = ""
+
+    @SerializedName("longitude")
+    var longitude: String = ""
 
     @SerializedName("ayan")
     var ayan = "K"
@@ -51,17 +74,40 @@ class GenerateNewRequestBody(@field:SerializedName("place_name")
     @SerializedName("relationshipCode")
     var relationshipCode = 0
 
-    init {
-        this.ayan = ayan
-        this.combocat = combocat
+    @SerializedName("chkcat")
+    var chkcat = false
+
+    private constructor(placeName: String, day: String, month: String, year: String, hour: String, minute: String, lat: String, lon: String, language: String, relationshipCode: Int) {
+        this.placeName = placeName
+        this.day = day
+        this.month = month
+        this.year = year
+        this.hour = hour
+        this.minute = minute
+        this.tz = "82.30E"
+        this.timezone = "82.30"
+        this.lat = lat
+        this.lon = lon
+        this.latitude = lat.replace("N", "")
+        this.longitude = lon.replace("E", "")
+        this.ayan = "K"
+        this.combocat = "all"
         this.language = language
-        this.cmbRotate = cmbRotate
-        this.txtAge = txtAge
-        this.chk72 = chk72
-        this.chkInclude = chkInclude
-        this.chkShowRef = chkShowRef
-        this.name = name
-        this.comboProd = comboProd
+        this.cmbRotate = 1
+        this.txtAge = 22
+        this.chk72 = false
+        this.chkInclude = false
+        this.chkShowRef = false
+        this.name = "OM"
+        this.comboProd = "New Product"
         this.relationshipCode = relationshipCode
+        this.chkcat = false
+    }
+
+    constructor(placeName: String, day: String, month: String, year: String,
+                hour: String, minute: String, lat: String, lon: String,
+                englishEnabled: Boolean) :
+            this(placeName, day, month, year, hour, minute, lat, lon, if (englishEnabled) "English" else "hindi", 0) {
+
     }
 }
