@@ -4,10 +4,6 @@ import com.google.gson.annotations.SerializedName
 
 import java.io.Serializable
 
-/**
- * Created by amangarg on 07/03/18.
- */
-
 class Planet : Serializable {
 
     @SerializedName("planet")

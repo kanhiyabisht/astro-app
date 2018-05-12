@@ -1,5 +1,7 @@
 package com.example.astrodashalib
 
+import android.content.ContentValues.TAG
+import android.util.Log
 import com.example.astrodashalib.service.RestProvider
 import com.example.astrodashalib.interfaces.DashaCallback
 import com.example.astrodashalib.model.*
@@ -9,12 +11,12 @@ import rx.Subscriber
 import rx.android.schedulers.AndroidSchedulers
 import rx.schedulers.Schedulers
 import rx.subscriptions.CompositeSubscription
+import java.util.ArrayList
 
 public class DashaData {
 
     internal var mCompositeSubscription = CompositeSubscription()
 
-    internal var mGenerateNewResponse: GenerateNewResponse? = null
     internal var mYogYutiResponse: YogYutiResponse? = null
     internal var mHoroscopeResponse: HoroscopeResponse? = null
     internal var mHealthResponse: HealthResponse? = null
@@ -26,9 +28,62 @@ public class DashaData {
     internal var mCurrentAntardashaFalResponse: CurrentAntardashaFalResponse? = null
 
 
-    fun getGenerateNewResponse(generateNewRequestBody: GenerateNewRequestBody, userId: String, callback: DashaCallback<GenerateNewResponse>) {
+    fun getPlaces(searchText: String, callback: DashaCallback<List<Place>>) {
+        val encodedSearchText = searchText.trim().replace(" ", "%20")
+        if (encodedSearchText.isNotEmpty()) {
+            mCompositeSubscription.add(RestProvider.getDashaService().searchPlaces(searchText, "Ind.")
+                    .retryWhen(RetryWithDelay(3, 2000))
+                    .subscribe(object : Subscriber<List<Place>>() {
+                        override fun onCompleted() {
+                        }
+
+                        override fun onError(e: Throwable) {
+                            callback.onError(e)
+                        }
+
+                        override fun onNext(places: List<Place>) {
+                            if (places.isNotEmpty())
+                                callback.onSuccess(places)
+                            else
+                                callback.onError(RemoteDataNotFoundException())
+                        }
+                    })
+            )
+        } else
+            callback.onError(SearchTextEmptyException())
+    }
+
+    fun getPlacesAsync(searchText: String, callback: DashaCallback<List<Place>>) {
+        val encodedSearchText = searchText.trim().replace(" ", "%20")
+        if (encodedSearchText.isNotEmpty()) {
+            mCompositeSubscription.add(RestProvider.getDashaService().searchPlaces(searchText, "Ind.")
+                    .subscribeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .retryWhen(RetryWithDelay(3, 2000))
+                    .subscribe(object : Subscriber<List<Place>>() {
+                        override fun onCompleted() {
+                        }
+
+                        override fun onError(e: Throwable) {
+                            callback.onError(e)
+                        }
+
+                        override fun onNext(places: List<Place>) {
+                            if (places.isNotEmpty())
+                                callback.onSuccess(places)
+                            else
+                                callback.onError(RemoteDataNotFoundException())
+                        }
+                    })
+            )
+        } else
+            callback.onError(SearchTextEmptyException())
+    }
+
+
+    fun getGenerateNewResponse(merchantId: String,generateNewRequestBody: GenerateNewRequestBody, callback: DashaCallback<GenerateNewResponse>) {
         try {
-            mCompositeSubscription.add(RestProvider.getDashaService().getMahaDashaResponse(Utils.MERCHANT_KEY_VALUE, Utils.KEY_VALUE, generateNewRequestBody, userId)
+            mCompositeSubscription.add(RestProvider.getDashaService().getMahaDashaResponse(merchantId, Utils.KEY_VALUE, generateNewRequestBody)
                     .retryWhen(RetryWithDelay(3, 2000))
                     .subscribe(object : Subscriber<GenerateNewResponse>() {
                         override fun onCompleted() {
@@ -40,8 +95,7 @@ public class DashaData {
                         }
 
                         override fun onNext(generateNewResponseBody: GenerateNewResponse) {
-                            mGenerateNewResponse = generateNewResponseBody
-                            callback.onSuccess(mGenerateNewResponse!!)
+                            callback.onSuccess(generateNewResponseBody)
 
                         }
                     }))
@@ -51,9 +105,9 @@ public class DashaData {
 
     }
 
-    fun getGenerateNewResponseAsync(generateNewRequestBody: GenerateNewRequestBody, userId: String, callback: DashaCallback<GenerateNewResponse>) {
+    fun getGenerateNewResponseAsync(merchantId: String, generateNewRequestBody: GenerateNewRequestBody, callback: DashaCallback<GenerateNewResponse>) {
         try {
-            mCompositeSubscription.add(RestProvider.getDashaService().getMahaDashaResponse(Utils.MERCHANT_KEY_VALUE, Utils.KEY_VALUE, generateNewRequestBody, userId)
+            mCompositeSubscription.add(RestProvider.getDashaService().getMahaDashaResponse(merchantId, Utils.KEY_VALUE, generateNewRequestBody)
                     .subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())
                     .retryWhen(RetryWithDelay(3, 2000))
@@ -67,9 +121,7 @@ public class DashaData {
                         }
 
                         override fun onNext(generateNewResponseBody: GenerateNewResponse) {
-                            mGenerateNewResponse = generateNewResponseBody
-                            callback.onSuccess(mGenerateNewResponse!!)
-
+                            callback.onSuccess(generateNewResponseBody)
                         }
                     }))
         } catch (e: Exception) {
@@ -78,12 +130,10 @@ public class DashaData {
 
     }
 
-    fun getCurrentMahadashaFal(currentMahadashaFalRequestBody: CurrentMahadashaFalRequestBody, callback: DashaCallback<CurrentMahadashaFalResponse>) {
+    fun getCurrentMahadashaFal(merchantId: String, currentMahadashaFalRequestBody: CurrentMahadashaFalRequestBody, callback: DashaCallback<CurrentMahadashaFalResponse>) {
 
         try {
-
-            mCompositeSubscription.add(RestProvider.getDashaService().getCurrentMahadashaFalText(Utils.MERCHANT_KEY_VALUE, Utils.KEY_VALUE, currentMahadashaFalRequestBody)
-                    .retryWhen(RetryWithDelay(3, 2000))
+            mCompositeSubscription.add(RestProvider.getDashaService().getCurrentMahadashaFalText(merchantId, Utils.KEY_VALUE, currentMahadashaFalRequestBody)
                     .subscribe(object : Subscriber<CurrentMahadashaFalResponse>() {
                         override fun onCompleted() {
 
@@ -106,12 +156,10 @@ public class DashaData {
 
     }
 
-    fun getCurrentMahadashaFalAsync(currentMahadashaFalRequestBody: CurrentMahadashaFalRequestBody, userId: String, callback: DashaCallback<CurrentMahadashaFalResponse>) {
+    fun getCurrentMahadashaFalAsync(merchantId: String, currentMahadashaFalRequestBody: CurrentMahadashaFalRequestBody, callback: DashaCallback<CurrentMahadashaFalResponse>) {
 
         try {
-
-            mCompositeSubscription.add(RestProvider.getDashaService().getCurrentMahadashaFalText(Utils.MERCHANT_KEY_VALUE, Utils.KEY_VALUE, currentMahadashaFalRequestBody)
-                    .retryWhen(RetryWithDelay(3, 2000))
+            mCompositeSubscription.add(RestProvider.getDashaService().getCurrentMahadashaFalText(merchantId, Utils.KEY_VALUE, currentMahadashaFalRequestBody)
                     .subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())
                     .subscribe(object : Subscriber<CurrentMahadashaFalResponse>() {
@@ -137,12 +185,11 @@ public class DashaData {
     }
 
 
-    fun getCurrentAntardashaFal(currentAntardashaFalRequestBody: CurrentAntardashaFalRequestBody, callback: DashaCallback<CurrentAntardashaFalResponse>) {
+    fun getCurrentAntardashaFal(merchantId: String, currentAntardashaFalRequestBody: CurrentAntardashaFalRequestBody, callback: DashaCallback<CurrentAntardashaFalResponse>) {
 
         try {
 
-            mCompositeSubscription.add(RestProvider.getDashaService().getCurrentAntardashaFalText(Utils.MERCHANT_KEY_VALUE, Utils.KEY_VALUE, currentAntardashaFalRequestBody)
-                    .retryWhen(RetryWithDelay(3, 2000))
+            mCompositeSubscription.add(RestProvider.getDashaService().getCurrentAntardashaFalText(merchantId, Utils.KEY_VALUE, currentAntardashaFalRequestBody)
                     .subscribe(object : Subscriber<CurrentAntardashaFalResponse>() {
                         override fun onCompleted() {
 
@@ -165,12 +212,11 @@ public class DashaData {
 
     }
 
-    fun getCurrentAntardashaFalAsync(currentAntardashaFalRequestBody: CurrentAntardashaFalRequestBody, userId: String, callback: DashaCallback<CurrentAntardashaFalResponse>) {
+    fun getCurrentAntardashaFalAsync(merchantId: String, currentAntardashaFalRequestBody: CurrentAntardashaFalRequestBody, callback: DashaCallback<CurrentAntardashaFalResponse>) {
 
         try {
 
-            mCompositeSubscription.add(RestProvider.getDashaService().getCurrentAntardashaFalText(Utils.MERCHANT_KEY_VALUE, Utils.KEY_VALUE, currentAntardashaFalRequestBody)
-                    .retryWhen(RetryWithDelay(3, 2000))
+            mCompositeSubscription.add(RestProvider.getDashaService().getCurrentAntardashaFalText(merchantId, Utils.KEY_VALUE, currentAntardashaFalRequestBody)
                     .subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())
                     .subscribe(object : Subscriber<CurrentAntardashaFalResponse>() {
@@ -196,12 +242,11 @@ public class DashaData {
     }
 
 
-    fun getYogYutiResponse(yogYutiRequestBody: YogYutiRequestBody, callback: DashaCallback<YogYutiResponse>) {
+    fun getYogYutiResponse(merchantId: String, yogYutiRequestBody: YogYutiRequestBody, callback: DashaCallback<YogYutiResponse>) {
 
         try {
 
-            mCompositeSubscription.add(RestProvider.getDashaService().getOnlyYogYutiText(Utils.MERCHANT_KEY_VALUE, Utils.KEY_VALUE, yogYutiRequestBody)
-                    .retryWhen(RetryWithDelay(3, 2000))
+            mCompositeSubscription.add(RestProvider.getDashaService().getOnlyYogYutiText(merchantId, Utils.KEY_VALUE, yogYutiRequestBody)
                     .subscribe(object : Subscriber<YogYutiResponse>() {
                         override fun onCompleted() {
 
@@ -224,12 +269,11 @@ public class DashaData {
 
     }
 
-    fun getYogYutiResponseAsync(yogYutiRequestBody: YogYutiRequestBody, callback: DashaCallback<YogYutiResponse>) {
+    fun getYogYutiResponseAsync(merchantId: String, yogYutiRequestBody: YogYutiRequestBody, callback: DashaCallback<YogYutiResponse>) {
 
         try {
 
-            mCompositeSubscription.add(RestProvider.getDashaService().getOnlyYogYutiText(Utils.MERCHANT_KEY_VALUE, Utils.KEY_VALUE, yogYutiRequestBody)
-                    .retryWhen(RetryWithDelay(3, 2000))
+            mCompositeSubscription.add(RestProvider.getDashaService().getOnlyYogYutiText(merchantId, Utils.KEY_VALUE, yogYutiRequestBody)
                     .subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())
                     .subscribe(object : Subscriber<YogYutiResponse>() {
@@ -254,12 +298,11 @@ public class DashaData {
 
     }
 
-    fun getHoroscopeResponse(horoscopeRequestBody: HoroscopeRequestBody, callback: DashaCallback<HoroscopeResponse>) {
+    fun getHoroscopeResponse(merchantId: String, horoscopeRequestBody: HoroscopeRequestBody, callback: DashaCallback<HoroscopeResponse>) {
 
         try {
 
-            mCompositeSubscription.add(RestProvider.getDashaService().getHoroscope(Utils.MERCHANT_KEY_VALUE, Utils.KEY_VALUE, horoscopeRequestBody)
-                    .retryWhen(RetryWithDelay(3, 2000))
+            mCompositeSubscription.add(RestProvider.getDashaService().getHoroscope(merchantId, Utils.KEY_VALUE, horoscopeRequestBody)
                     .subscribe(object : Subscriber<HoroscopeResponse>() {
                         override fun onCompleted() {
 
@@ -282,12 +325,11 @@ public class DashaData {
 
     }
 
-    fun getHoroscopeResponseAsync(horoscopeRequestBody: HoroscopeRequestBody, callback: DashaCallback<HoroscopeResponse>) {
+    fun getHoroscopeResponseAsync(merchantId: String, horoscopeRequestBody: HoroscopeRequestBody, callback: DashaCallback<HoroscopeResponse>) {
 
         try {
 
-            mCompositeSubscription.add(RestProvider.getDashaService().getHoroscope(Utils.MERCHANT_KEY_VALUE, Utils.KEY_VALUE, horoscopeRequestBody)
-                    .retryWhen(RetryWithDelay(3, 2000))
+            mCompositeSubscription.add(RestProvider.getDashaService().getHoroscope(merchantId, Utils.KEY_VALUE, horoscopeRequestBody)
                     .subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())
                     .subscribe(object : Subscriber<HoroscopeResponse>() {
@@ -313,12 +355,11 @@ public class DashaData {
     }
 
 
-    fun getHealthResponse(predictionRequestBody: PredictionRequestBody, callback: DashaCallback<HealthResponse>) {
+    fun getHealthResponse(merchantId: String, predictionRequestBody: PredictionRequestBody, callback: DashaCallback<HealthResponse>) {
 
         try {
 
-            mCompositeSubscription.add(RestProvider.getDashaService().getOnlyHealthText(Utils.MERCHANT_KEY_VALUE, Utils.KEY_VALUE, predictionRequestBody)
-                    .retryWhen(RetryWithDelay(3, 2000))
+            mCompositeSubscription.add(RestProvider.getDashaService().getOnlyHealthText(merchantId, Utils.KEY_VALUE, predictionRequestBody)
                     .subscribe(object : Subscriber<HealthResponse>() {
                         override fun onCompleted() {
 
@@ -341,12 +382,11 @@ public class DashaData {
 
     }
 
-    fun getHealthResponseAsync(predictionRequestBody: PredictionRequestBody, callback: DashaCallback<HealthResponse>) {
+    fun getHealthResponseAsync(merchantId: String, predictionRequestBody: PredictionRequestBody, callback: DashaCallback<HealthResponse>) {
 
         try {
 
-            mCompositeSubscription.add(RestProvider.getDashaService().getOnlyHealthText(Utils.MERCHANT_KEY_VALUE, Utils.KEY_VALUE, predictionRequestBody)
-                    .retryWhen(RetryWithDelay(3, 2000))
+            mCompositeSubscription.add(RestProvider.getDashaService().getOnlyHealthText(merchantId, Utils.KEY_VALUE, predictionRequestBody)
                     .subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())
                     .subscribe(object : Subscriber<HealthResponse>() {
@@ -372,12 +412,11 @@ public class DashaData {
     }
 
 
-    fun getMarriedLifeResponse(predictionRequestBody: PredictionRequestBody, callback: DashaCallback<MarriedLifeResponse>) {
+    fun getMarriedLifeResponse(merchantId: String, predictionRequestBody: PredictionRequestBody, callback: DashaCallback<MarriedLifeResponse>) {
 
         try {
 
-            mCompositeSubscription.add(RestProvider.getDashaService().getOnlyMarriedLifeText(Utils.MERCHANT_KEY_VALUE, Utils.KEY_VALUE, predictionRequestBody)
-                    .retryWhen(RetryWithDelay(3, 2000))
+            mCompositeSubscription.add(RestProvider.getDashaService().getOnlyMarriedLifeText(merchantId, Utils.KEY_VALUE, predictionRequestBody)
                     .subscribe(object : Subscriber<MarriedLifeResponse>() {
                         override fun onCompleted() {
 
@@ -400,12 +439,9 @@ public class DashaData {
 
     }
 
-    fun getMarriedLifeResponseAsync(predictionRequestBody: PredictionRequestBody, callback: DashaCallback<MarriedLifeResponse>) {
-
+    fun getMarriedLifeResponseAsync(merchantId: String, predictionRequestBody: PredictionRequestBody, callback: DashaCallback<MarriedLifeResponse>) {
         try {
-
-            mCompositeSubscription.add(RestProvider.getDashaService().getOnlyMarriedLifeText(Utils.MERCHANT_KEY_VALUE, Utils.KEY_VALUE, predictionRequestBody)
-                    .retryWhen(RetryWithDelay(3, 2000))
+            mCompositeSubscription.add(RestProvider.getDashaService().getOnlyMarriedLifeText(merchantId, Utils.KEY_VALUE, predictionRequestBody)
                     .subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())
                     .subscribe(object : Subscriber<MarriedLifeResponse>() {
@@ -415,7 +451,6 @@ public class DashaData {
 
                         override fun onError(e: Throwable) {
                             callback.onError(e)
-
                         }
 
                         override fun onNext(marriedLifeResponse: MarriedLifeResponse) {
@@ -431,12 +466,11 @@ public class DashaData {
     }
 
 
-    fun getOccupationResponse(predictionRequestBody: PredictionRequestBody, callback: DashaCallback<OccupationResponse>) {
+    fun getOccupationResponse(merchantId:String,predictionRequestBody: PredictionRequestBody, callback: DashaCallback<OccupationResponse>) {
 
         try {
 
-            mCompositeSubscription.add(RestProvider.getDashaService().getOnlyOccupationText(Utils.MERCHANT_KEY_VALUE, Utils.KEY_VALUE, predictionRequestBody)
-                    .retryWhen(RetryWithDelay(3, 2000))
+            mCompositeSubscription.add(RestProvider.getDashaService().getOnlyOccupationText(merchantId, Utils.KEY_VALUE, predictionRequestBody)
                     .subscribe(object : Subscriber<OccupationResponse>() {
                         override fun onCompleted() {
 
@@ -458,12 +492,10 @@ public class DashaData {
 
     }
 
-    fun getOccupationResponseAsync(predictionRequestBody: PredictionRequestBody, callback: DashaCallback<OccupationResponse>) {
+    fun getOccupationResponseAsync(merchantId:String,predictionRequestBody: PredictionRequestBody, callback: DashaCallback<OccupationResponse>) {
 
         try {
-
-            mCompositeSubscription.add(RestProvider.getDashaService().getOnlyOccupationText(Utils.MERCHANT_KEY_VALUE, Utils.KEY_VALUE, predictionRequestBody)
-                    .retryWhen(RetryWithDelay(3, 2000))
+            mCompositeSubscription.add(RestProvider.getDashaService().getOnlyOccupationText(merchantId, Utils.KEY_VALUE, predictionRequestBody)
                     .subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())
                     .subscribe(object : Subscriber<OccupationResponse>() {
@@ -488,12 +520,11 @@ public class DashaData {
     }
 
 
-    fun getParentsResponse(predictionRequestBody: PredictionRequestBody, callback: DashaCallback<ParentsResponse>) {
+    fun getParentsResponse(merchantId:String,predictionRequestBody: PredictionRequestBody, callback: DashaCallback<ParentsResponse>) {
 
         try {
 
-            mCompositeSubscription.add(RestProvider.getDashaService().getOnlyParentsText(Utils.MERCHANT_KEY_VALUE, Utils.KEY_VALUE, predictionRequestBody)
-                    .retryWhen(RetryWithDelay(3, 2000))
+            mCompositeSubscription.add(RestProvider.getDashaService().getOnlyParentsText(merchantId, Utils.KEY_VALUE, predictionRequestBody)
                     .subscribe(object : Subscriber<ParentsResponse>() {
                         override fun onCompleted() {
 
@@ -517,12 +548,11 @@ public class DashaData {
 
     }
 
-    fun getParentsResponseAsync(predictionRequestBody: PredictionRequestBody, callback: DashaCallback<ParentsResponse>) {
+    fun getParentsResponseAsync(merchantId:String,predictionRequestBody: PredictionRequestBody, callback: DashaCallback<ParentsResponse>) {
 
         try {
 
-            mCompositeSubscription.add(RestProvider.getDashaService().getOnlyParentsText(Utils.MERCHANT_KEY_VALUE, Utils.KEY_VALUE, predictionRequestBody)
-                    .retryWhen(RetryWithDelay(3, 2000))
+            mCompositeSubscription.add(RestProvider.getDashaService().getOnlyParentsText(merchantId, Utils.KEY_VALUE, predictionRequestBody)
                     .subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())
                     .subscribe(object : Subscriber<ParentsResponse>() {
@@ -549,12 +579,11 @@ public class DashaData {
     }
 
 
-    fun getChildrenResponse(predictionRequestBody: PredictionRequestBody, callback: DashaCallback<ChildrenResponse>) {
+    fun getChildrenResponse(merchantId:String,predictionRequestBody: PredictionRequestBody, callback: DashaCallback<ChildrenResponse>) {
 
         try {
 
-            mCompositeSubscription.add(RestProvider.getDashaService().getOnlyChildrenText(Utils.MERCHANT_KEY_VALUE, Utils.KEY_VALUE, predictionRequestBody)
-                    .retryWhen(RetryWithDelay(3, 2000))
+            mCompositeSubscription.add(RestProvider.getDashaService().getOnlyChildrenText(merchantId, Utils.KEY_VALUE, predictionRequestBody)
                     .subscribe(object : Subscriber<ChildrenResponse>() {
                         override fun onCompleted() {
 
@@ -577,12 +606,11 @@ public class DashaData {
 
     }
 
-    fun getChildrenResponseAsync(predictionRequestBody: PredictionRequestBody, callback: DashaCallback<ChildrenResponse>) {
+    fun getChildrenResponseAsync(merchantId:String,predictionRequestBody: PredictionRequestBody, callback: DashaCallback<ChildrenResponse>) {
 
         try {
 
-            mCompositeSubscription.add(RestProvider.getDashaService().getOnlyChildrenText(Utils.MERCHANT_KEY_VALUE, Utils.KEY_VALUE, predictionRequestBody)
-                    .retryWhen(RetryWithDelay(3, 2000))
+            mCompositeSubscription.add(RestProvider.getDashaService().getOnlyChildrenText(merchantId, Utils.KEY_VALUE, predictionRequestBody)
                     .subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())
                     .subscribe(object : Subscriber<ChildrenResponse>() {
@@ -604,7 +632,10 @@ public class DashaData {
         } catch (e: Exception) {
             e.printStackTrace()
         }
+    }
 
+    fun clear() {
+        mCompositeSubscription.clear()
     }
 
 }

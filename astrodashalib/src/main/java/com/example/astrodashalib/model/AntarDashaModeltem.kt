@@ -2,9 +2,6 @@ package com.example.astrodashalib.model
 
 import com.google.gson.annotations.SerializedName
 
-/**
- * Created by amangarg.
- */
 
 class AntarDashaModeltem(@field:SerializedName("Planet")
                          var mMainPlanetName: String, @field:SerializedName("Antar")

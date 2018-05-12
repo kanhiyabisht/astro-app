@@ -5,10 +5,6 @@ import com.google.gson.annotations.SerializedName
 import java.io.Serializable
 import java.util.ArrayList
 
-/**
- * Created by amangarg on 06/03/18.
- */
-
 class MainMahaDasha : Serializable {
 
     @SerializedName("SNo")
