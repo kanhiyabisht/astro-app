@@ -12,13 +12,12 @@ import kotlinx.android.synthetic.main.activity_main_dasha.*
 import kotlinx.android.synthetic.main.progress_layout.*
 
 class MainDashaActivity : AppCompatActivity() {
-
+    var dashaData = DashaData()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main_dasha)
 
         var intent = Intent(this, DashaTextActivity::class.java)
-        var dashaData = DashaData()
         var dashaResponse: String? = null
 
 
@@ -224,6 +223,11 @@ class MainDashaActivity : AppCompatActivity() {
         }
 
 
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        dashaData.clear()
     }
 
 
