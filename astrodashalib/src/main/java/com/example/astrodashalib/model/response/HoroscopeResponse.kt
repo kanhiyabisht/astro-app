@@ -89,6 +89,60 @@ class HoroscopeResponse : Serializable{
     @SerializedName("ratna4YouValue")
     var ratna4YouValue: String = ""
 
+    @SerializedName("suryaHeader")
+    var suryaHeader: String = ""
+
+    @SerializedName("suryaValue")
+    var suryaValue: String = ""
+
+    @SerializedName("chandraHeader")
+    var chandraHeader: String = ""
+
+    @SerializedName("chandraValue")
+    var chandraValue: String = ""
+
+    @SerializedName("mangalHeader")
+    var mangalHeader: String = ""
+
+    @SerializedName("mangalValue")
+    var mangalValue: String = ""
+
+    @SerializedName("budhHeader")
+    var budhHeader: String = ""
+
+    @SerializedName("budhValue")
+    var budhValue: String = ""
+
+    @SerializedName("guruHeader")
+    var guruHeader: String = ""
+
+    @SerializedName("guruValue")
+    var guruValue: String = ""
+
+    @SerializedName("sukraHeader")
+    var sukraHeader: String = ""
+
+    @SerializedName("sukraValue")
+    var sukraValue: String = ""
+
+    @SerializedName("shaniHeader")
+    var shaniHeader: String = ""
+
+    @SerializedName("shaniValue")
+    var shaniValue: String = ""
+
+    @SerializedName("rahuHeader")
+    var rahuHeader: String = ""
+
+    @SerializedName("rahuValue")
+    var rahuValue: String = ""
+
+    @SerializedName("ketuHeader")
+    var ketuHeader: String = ""
+
+    @SerializedName("ketuValue")
+    var ketuValue: String = ""
+
     @SerializedName("vdaanHeader")
     var vdaanHeader: String = ""
 
@@ -106,4 +160,7 @@ class HoroscopeResponse : Serializable{
 
     @SerializedName("vcolorValue")
     var vcolorValue: String = ""
+
+    @SerializedName("planetLordValue")
+    var planetLordValue: String = ""
 }
