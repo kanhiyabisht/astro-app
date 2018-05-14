@@ -25,7 +25,7 @@ class MainActivity : AppCompatActivity() {
             dashaData.getPlacesAsync("new", object : DashaCallback<List<Place>> {
                 override fun onSuccess(data: List<Place>) {
                     val place = data[0]
-                    val generateNewRequestBody = GenerateNewRequestBody(place.place,"3","5","1990","18","30",place.latitude,place.longitude,true)
+                    val generateNewRequestBody = GenerateNewRequestBody(place.place,"3","5","1990","18","30",place.latitude,place.longitude,englishEnabled = false)
                     dashaData.getGenerateNewResponseAsync("",generateNewRequestBody, object : DashaCallback<GenerateNewResponse> {
                         override fun onSuccess(data: GenerateNewResponse) {
                             generateNewResponse = data

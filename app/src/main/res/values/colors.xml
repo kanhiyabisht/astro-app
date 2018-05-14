@@ -5,4 +5,7 @@
     <color name="colorAccent">#FF4081</color>
     <color name="colorAstro">#c8bb9f</color>
     <color name="white">#ffffff</color>
+    <color name="gray_5">#dddddd</color>
+    <color name="gray_3">#EEEEEE</color>
+    <color name="black">#000000</color>
 </resources>

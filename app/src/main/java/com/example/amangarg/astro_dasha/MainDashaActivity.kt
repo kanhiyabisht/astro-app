@@ -18,6 +18,7 @@ class MainDashaActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main_dasha)
 
         var intent = Intent(this, DashaTextActivity::class.java)
+        var horoscopeIntent = Intent(this, HoroscopeActivity::class.java)
         var dashaResponse: String? = null
 
 
@@ -38,9 +39,8 @@ class MainDashaActivity : AppCompatActivity() {
             dashaData.getHoroscopeResponseAsync("",HoroscopeRequestBody(kpChartValue, onlineResultValue, paramForPerskvValue), object : DashaCallback<HoroscopeResponse> {
                 override fun onSuccess(data: HoroscopeResponse) {
 
-                    dashaResponse = data.luckyDayValue
-                    intent.putExtra("dashaResp", dashaResponse)
-                    startActivity(intent)
+                    horoscopeIntent.putExtra("horoscopeResp", data)
+                    startActivity(horoscopeIntent)
                     progress_view_ll.visibility = View.GONE
                     nsv.visibility = View.VISIBLE
                 }

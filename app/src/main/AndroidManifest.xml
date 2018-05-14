@@ -19,7 +19,8 @@
             </intent-filter>
         </activity>
         <activity android:name=".MainDashaActivity" />
-        <activity android:name=".DashaTextActivity"></activity>
+        <activity android:name=".DashaTextActivity" />
+        <activity android:name=".HoroscopeActivity"></activity>
     </application>
 
 </manifest>
