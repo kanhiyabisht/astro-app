@@ -1,32 +1,18 @@
 package com.example.astrodashalib
 
-import android.content.ContentValues.TAG
-import android.util.Log
-import com.example.astrodashalib.service.RestProvider
 import com.example.astrodashalib.interfaces.DashaCallback
 import com.example.astrodashalib.model.*
 import com.example.astrodashalib.model.response.*
+import com.example.astrodashalib.service.RestProvider
 import com.example.astrodashalib.utils.Utils
 import rx.Subscriber
 import rx.android.schedulers.AndroidSchedulers
 import rx.schedulers.Schedulers
 import rx.subscriptions.CompositeSubscription
-import java.util.ArrayList
 
 public class DashaData {
 
     internal var mCompositeSubscription = CompositeSubscription()
-
-    internal var mYogYutiResponse: YogYutiResponse? = null
-    internal var mHoroscopeResponse: HoroscopeResponse? = null
-    internal var mHealthResponse: HealthResponse? = null
-    internal var mMarriedLifeResponse: MarriedLifeResponse? = null
-    internal var mOccupationResponse: OccupationResponse? = null
-    internal var mParentsResponse: ParentsResponse? = null
-    internal var mChildrenResponse: ChildrenResponse? = null
-    internal var mCurrentMahadashaFalResponse: CurrentMahadashaFalResponse? = null
-    internal var mCurrentAntardashaFalResponse: CurrentAntardashaFalResponse? = null
-
 
     fun getPlaces(searchText: String, callback: DashaCallback<List<Place>>) {
         val encodedSearchText = searchText.trim().replace(" ", "%20")
@@ -145,8 +131,7 @@ public class DashaData {
                         }
 
                         override fun onNext(currentMahadashaFalResponse: CurrentMahadashaFalResponse) {
-                            mCurrentMahadashaFalResponse = currentMahadashaFalResponse
-                            callback.onSuccess(mCurrentMahadashaFalResponse!!)
+                            callback.onSuccess(currentMahadashaFalResponse)
 
                         }
                     }))
@@ -173,8 +158,7 @@ public class DashaData {
                         }
 
                         override fun onNext(currentMahadashaFalResponse: CurrentMahadashaFalResponse) {
-                            mCurrentMahadashaFalResponse = currentMahadashaFalResponse
-                            callback.onSuccess(mCurrentMahadashaFalResponse!!)
+                            callback.onSuccess(currentMahadashaFalResponse)
 
                         }
                     }))
@@ -201,8 +185,7 @@ public class DashaData {
                         }
 
                         override fun onNext(currentAntardashaFalResponse: CurrentAntardashaFalResponse) {
-                            mCurrentAntardashaFalResponse = currentAntardashaFalResponse
-                            callback.onSuccess(mCurrentAntardashaFalResponse!!)
+                            callback.onSuccess(currentAntardashaFalResponse)
 
                         }
                     }))
@@ -230,8 +213,7 @@ public class DashaData {
                         }
 
                         override fun onNext(currentAntardashaFalResponse: CurrentAntardashaFalResponse) {
-                            mCurrentAntardashaFalResponse = currentAntardashaFalResponse
-                            callback.onSuccess(mCurrentAntardashaFalResponse!!)
+                            callback.onSuccess(currentAntardashaFalResponse)
 
                         }
                     }))
@@ -258,8 +240,7 @@ public class DashaData {
                         }
 
                         override fun onNext(yogYutiResponse: YogYutiResponse) {
-                            mYogYutiResponse = yogYutiResponse
-                            callback.onSuccess(mYogYutiResponse!!)
+                            callback.onSuccess(yogYutiResponse)
 
                         }
                     }))
@@ -287,8 +268,7 @@ public class DashaData {
                         }
 
                         override fun onNext(yogYutiResponse: YogYutiResponse) {
-                            mYogYutiResponse = yogYutiResponse
-                            callback.onSuccess(mYogYutiResponse!!)
+                            callback.onSuccess(yogYutiResponse)
 
                         }
                     }))
@@ -314,8 +294,7 @@ public class DashaData {
                         }
 
                         override fun onNext(horoscopeResponse: HoroscopeResponse) {
-                            mHoroscopeResponse = horoscopeResponse
-                            callback.onSuccess(mHoroscopeResponse!!)
+                            callback.onSuccess(horoscopeResponse)
 
                         }
                     }))
@@ -343,8 +322,7 @@ public class DashaData {
                         }
 
                         override fun onNext(horoscopeResponse: HoroscopeResponse) {
-                            mHoroscopeResponse = horoscopeResponse
-                            callback.onSuccess(mHoroscopeResponse!!)
+                            callback.onSuccess(horoscopeResponse)
 
                         }
                     }))
@@ -371,8 +349,7 @@ public class DashaData {
                         }
 
                         override fun onNext(healthResponse: HealthResponse) {
-                            mHealthResponse = healthResponse
-                            callback.onSuccess(mHealthResponse!!)
+                            callback.onSuccess(healthResponse)
 
                         }
                     }))
@@ -400,8 +377,7 @@ public class DashaData {
                         }
 
                         override fun onNext(healthResponse: HealthResponse) {
-                            mHealthResponse = healthResponse
-                            callback.onSuccess(mHealthResponse!!)
+                            callback.onSuccess(healthResponse)
 
                         }
                     }))
@@ -428,8 +404,7 @@ public class DashaData {
                         }
 
                         override fun onNext(marriedLifeResponse: MarriedLifeResponse) {
-                            mMarriedLifeResponse = marriedLifeResponse
-                            callback.onSuccess(mMarriedLifeResponse!!)
+                            callback.onSuccess(marriedLifeResponse)
 
                         }
                     }))
@@ -454,8 +429,7 @@ public class DashaData {
                         }
 
                         override fun onNext(marriedLifeResponse: MarriedLifeResponse) {
-                            mMarriedLifeResponse = marriedLifeResponse
-                            callback.onSuccess(mMarriedLifeResponse!!)
+                            callback.onSuccess(marriedLifeResponse)
 
                         }
                     }))
@@ -481,8 +455,7 @@ public class DashaData {
                         }
 
                         override fun onNext(occupationResponse: OccupationResponse) {
-                            mOccupationResponse = occupationResponse
-                            callback.onSuccess(mOccupationResponse!!)
+                            callback.onSuccess(occupationResponse)
 
                         }
                     }))
@@ -508,8 +481,7 @@ public class DashaData {
                         }
 
                         override fun onNext(occupationResponse: OccupationResponse) {
-                            mOccupationResponse = occupationResponse
-                            callback.onSuccess(mOccupationResponse!!)
+                            callback.onSuccess(occupationResponse)
 
                         }
                     }))
@@ -536,9 +508,7 @@ public class DashaData {
                         }
 
                         override fun onNext(parentsResponse: ParentsResponse) {
-
-                            mParentsResponse = parentsResponse
-                            callback.onSuccess(mParentsResponse!!)
+                            callback.onSuccess(parentsResponse)
 
                         }
                     }))
@@ -566,9 +536,7 @@ public class DashaData {
                         }
 
                         override fun onNext(parentsResponse: ParentsResponse) {
-
-                            mParentsResponse = parentsResponse
-                            callback.onSuccess(mParentsResponse!!)
+                            callback.onSuccess(parentsResponse)
 
                         }
                     }))
@@ -595,8 +563,7 @@ public class DashaData {
                         }
 
                         override fun onNext(childrenResponse: ChildrenResponse) {
-                            mChildrenResponse = childrenResponse
-                            callback.onSuccess(mChildrenResponse!!)
+                            callback.onSuccess(childrenResponse)
 
                         }
                     }))
@@ -624,8 +591,7 @@ public class DashaData {
                         }
 
                         override fun onNext(childrenResponse: ChildrenResponse) {
-                            mChildrenResponse = childrenResponse
-                            callback.onSuccess(mChildrenResponse!!)
+                            callback.onSuccess(childrenResponse)
 
                         }
                     }))
