@@ -163,4 +163,6 @@ class HoroscopeResponse : Serializable{
 
     @SerializedName("planetLordValue")
     var planetLordValue: String = ""
+
+
 }
