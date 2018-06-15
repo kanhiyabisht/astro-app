@@ -1,4 +1,85 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.astrodashalib">
+    <uses-permission android:name="com.android.vending.BILLING" />
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
+    <uses-permission android:name="android.permission.READ_SMS" />
+    <uses-permission android:name="android.permission.SEND_SMS" />
+    <uses-permission android:name="android.permission.RECEIVE_SMS" />
+    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
+
+    <application
+        android:allowBackup="true"
+        android:supportsRtl="true"
+        android:theme="@style/AppTheme">
+
+        <meta-data
+            android:name="com.google.android.gms.version"
+            android:value="@integer/google_play_services_version" />
+        <activity
+            android:name=".view.modules.chat.ChatDetailActivity"
+            android:label="@string/app_name"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme"
+            android:windowSoftInputMode="stateHidden|adjustResize" />
+        <activity
+            android:name=".view.SplashScreen"
+            android:screenOrientation="portrait">
+        </activity>
+        <activity
+            android:name=".view.modules.phoneVerification.PhoneVerificationActivity"
+            android:screenOrientation="portrait" />
+
+
+        <receiver android:name=".generic.NetworkChangeReciever">
+            <intent-filter>
+                <action android:name="android.net.conn.CONNECTIVITY_CHANGE" />
+            </intent-filter>
+        </receiver>
+
+        <service
+            android:name=".service.faye.FayeService"
+            android:exported="false" />
+        <service
+            android:name=".service.faye.FayeIntentService"
+            android:exported="false" />
+        <service
+            android:name=".service.faye.NewChatService"
+            android:exported="false" />
+        <service
+            android:name=".service.faye.ChatIntentService"
+            android:exported="false" />
+        <service
+            android:name=".service.device.DeviceIdJobService"
+            android:enabled="true"
+            android:exported="true"
+            android:permission="android.permission.BIND_JOB_SERVICE" />
+        <service
+            android:name=".service.faye.FayeJobService"
+            android:enabled="true"
+            android:exported="true"
+            android:permission="android.permission.BIND_JOB_SERVICE" />
+        <service
+            android:name=".service.device.DeviceIdService"
+            android:exported="false" />
+        <service android:name=".service.fcm.FCMService">
+            <intent-filter>
+                <action android:name="com.google.firebase.MESSAGING_EVENT" />
+            </intent-filter>
+        </service>
+        <service android:name=".service.RefreshInstanceIdService">
+            <intent-filter>
+                <action android:name="com.google.firebase.INSTANCE_ID_EVENT" />
+            </intent-filter>
+        </service>
+
+        <activity android:name=".view.ViewRemedyActivity"
+            android:theme="@style/OldAppTheme"
+            android:screenOrientation="portrait"/>
+    </application>
+
 </manifest>

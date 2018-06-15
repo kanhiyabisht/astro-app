@@ -1,0 +1,29 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <ScrollView
+        android:id="@+id/scroll_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_centerInParent="true">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:id="@+id/prediction_detail_tv"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingTop="5dp"
+                android:text="When each frame is drawn, we first move the SnowFlake by adding some random elements to simulate small gusts of wind which could cause individual flakes to change direction slightly. We then perform our in bounds check (and move it back to the top, if necessary) before actually drawing the SnowFlake on the Canvas sfdsfksydfiuysdf"
+                android:textColor="#000000"
+                android:textSize="@dimen/answer_text_size" />
+        </RelativeLayout>
+    </ScrollView>
+
+
+
+</RelativeLayout>

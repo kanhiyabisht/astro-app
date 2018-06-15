@@ -1,0 +1,22 @@
+package com.example.astrodashalib.data.service
+
+import com.example.astrodashalib.data.models.*
+import retrofit2.http.Body
+import retrofit2.http.Header
+import retrofit2.http.POST
+import rx.Observable
+
+/**
+ * Created by himanshu on 09/10/17.
+ */
+interface PaymentService {
+
+    @POST("/paytm/checksum")
+    fun getPaytmHash(@Header("key") secretValue: String, @Body paytmHashRequestBody: PaytmHashRequestBody): Observable<PaytmHashResponse>
+
+    @POST("/paytm/getStatus")
+    fun getPaytmOrderStatus(@Header("key") secretValue: String, @Body paytmOrderStatusBody: PaytmOrderStatusBody): Observable<PaytmOrderStatusDetail>
+
+    @POST("/payment")
+    fun postPaymentDetails(@Header("key") secretValue: String, @Body paymentDetail: PaymentDetail, @Header("user_id") userId: String): Observable<StatusModel>
+}

@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="10dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/rule_id_tv"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="5dp"
+            android:ellipsize="end"
+            android:gravity="start"
+            android:text="Rule Id : 1234"
+            android:textColor="@color/dark_gray"
+            android:textSize="18sp"
+            />
+
+        <TextView
+            android:id="@+id/rule_tv"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="5dp"
+            android:ellipsize="end"
+            android:gravity="start"
+            android:text="Rule : "
+            android:textColor="@color/dark_gray"
+            android:textSize="18sp"
+            />
+
+        <TextView
+            android:id="@+id/upay_id_tv"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="5dp"
+            android:ellipsize="end"
+            android:gravity="start"
+            android:text="Upay Id : 12345"
+            android:textColor="@color/dark_gray"
+            android:textSize="18sp"
+            />
+
+        <TextView
+            android:id="@+id/remedy_description"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="5dp"
+            android:ellipsize="end"
+            android:gravity="start"
+            android:text="When each frame is drawn, we first move the SnowFlake by adding some random elements to simulate small gusts of wind which could cause individual flakes to change direction slightly. We then perform our in bounds check (and move it back to the top, if necessary) before actually drawing the SnowFlake on the Canvas"
+            android:textColor="@color/dark_gray"
+            android:textSize="18sp"
+            />
+    </LinearLayout>
+
+
+</android.support.v7.widget.CardView>

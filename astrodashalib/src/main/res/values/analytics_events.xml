@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="place_selected">Place_selected</string>
+    <string name="places_screen">Places_Screen</string>
+    <string name="dob_click">DOB_Click</string>
+    <string name="tob_click">TOB_Click</string>
+    <string name="dob_ok_click_1">DOB_OK_Click_1</string>
+    <string name="dob_ok_click_2">DOB_OK_Click_2</string>
+    <string name="splash_screen">Splash_Screen</string>
+    <string name="device_id_job_service">Device_Id_Job_Service</string>
+    <string name="device_id_service">Device_Id_Service</string>
+    <string name="google_wallet_click">Google_wallet_Click</string>
+    <string name="paytm_click">Paytm_Click</string>
+    <string name="payment_error">Payment_error</string>
+    <string name="paytm_order_error">Payment_order_error</string>
+    <string name="google_wallet">Google_wallet</string>
+    <string name="paytm">Paytm</string>
+    <string name="paytm_order">Paytm_Order</string>
+    <string name="email_verified_by_fb">Email_verified_by_fb</string>
+    <string name="my_remedy_question_click">My_Remedy_Question_Click</string>
+    <string name="prediciton_detail_back_press">Prediciton_Detail_Back_Press</string>
+    <string name="prediction_detail_screen">Prediction_Detail_Screen</string>
+    <string name="to_prediction_detail_screen" formatted="false">%sToPredictionDetailScreen</string>
+    <string name="prediction_pager_view_remedy_click">Prediction_pager_view_remedy_click</string>
+    <string name="view_remedy_screen">View_Remedy_Screen</string>
+    <string name="copy_chat">Copy_Chat</string>
+    <string name="resend_chat">Resend_Chat</string>
+</resources>

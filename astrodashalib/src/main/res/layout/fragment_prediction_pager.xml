@@ -1,0 +1,117 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    app:layout_behavior="@string/scroll_behavior">
+
+    <RelativeLayout
+        android:id="@+id/background_rl"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <FrameLayout
+            android:id="@+id/frame"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+
+        <ImageView
+            android:id="@+id/image_view"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_above="@+id/remedy_view"
+            android:layout_alignWithParentIfMissing="true"
+            android:scaleType="fitXY" />
+
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_above="@+id/remedy_view"
+            android:layout_alignWithParentIfMissing="true"
+            android:gravity="center">
+
+            <ImageView
+                android:id="@+id/farmaan_iv"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:scaleType="fitCenter"
+                android:src="@drawable/farmaan" />
+
+            <com.rd.PageIndicatorView
+                android:id="@+id/indicator"
+                android:layout_width="wrap_content"
+                android:layout_height="20dp"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="50dp"
+
+                app:piv_animationType="worm"
+                app:piv_interactiveAnimation="true"
+                app:piv_radius="5dp"
+                app:piv_selectedColor="@color/colorPrimary"
+                app:piv_unselectedColor="@color/gray_4"
+                app:piv_viewPager="@id/txt_view_pager" />
+
+            <android.support.v4.view.ViewPager
+                android:id="@+id/txt_view_pager"
+                android:layout_width="@dimen/farmaan_scroll_view_size"
+                android:layout_height="@dimen/farmaan_scroll_view_size"
+                android:layout_centerInParent="true" />
+
+
+        </RelativeLayout>
+
+
+        <LinearLayout
+            android:id="@+id/remedy_view"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_centerInParent="true"
+            android:orientation="vertical">
+
+
+            <LinearLayout
+                android:id="@+id/view_rememdy_ll"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:orientation="horizontal"
+                tools:visibility="visible">
+
+
+                <Button
+                    android:id="@+id/view_single_remedy_btn"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="5dp"
+                    android:layout_weight="1"
+                    android:background="#c8bb9f"
+                    android:drawableLeft="@drawable/shopping_basket"
+                    android:drawablePadding="15dp"
+                    android:drawableStart="@drawable/shopping_basket"
+                    android:padding="10dp"
+                    android:text="View Remedy"
+                    android:textSize="18sp"
+                    android:visibility="visible" />
+
+                <Button
+                    android:id="@+id/view_all_btn"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="5dp"
+                    android:layout_weight="1"
+                    android:background="#c8bb9f"
+                    android:drawableEnd="@drawable/arrow_right_white"
+                    android:drawableRight="@drawable/arrow_right_white"
+
+                    android:padding="10dp"
+                    android:text="View All"
+                    android:textSize="18sp"
+                    android:visibility="visible" />
+            </LinearLayout>
+
+
+        </LinearLayout>
+    </RelativeLayout>
+</RelativeLayout>
