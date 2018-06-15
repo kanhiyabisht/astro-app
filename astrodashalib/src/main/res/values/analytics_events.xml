@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="place_selected">Place_selected</string>
+    <string name="places_screen">Places_Screen</string>
+    <string name="dob_click">DOB_Click</string>
+    <string name="tob_click">TOB_Click</string>
+    <string name="dob_ok_click_1">DOB_OK_Click_1</string>
+    <string name="dob_ok_click_2">DOB_OK_Click_2</string>
+    <string name="splash_screen">Splash_Screen</string>
+</resources>
