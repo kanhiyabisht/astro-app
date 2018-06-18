@@ -41,15 +41,19 @@ public class DeviceIdService extends IntentService {
         if (intent != null) {
             try {
                 ctx = DeviceIdService.this;
-                regid = FirebaseInstanceId.getInstance().getToken();
+//                regid = FirebaseInstanceId.getInstance().getToken();
+                regid="4d8e6a8bc968f22cb850043d096ca250250932f8f93cfbfbb67433474da72ff9";
                 if (regid != null && !regid.equals(PrefGetter.getDeviceId(ctx.getApplicationContext()))) {
-                    String latestUserShown = PrefGetter.getLatestUserShown(ctx.getApplicationContext());
+                    PrefGetter.setDeviceId(regid,ctx.getApplicationContext());
+                    if (!PrefGetter.getUserId(ctx.getApplicationContext()).equals("-1"))
+                        FayeChannelController.newInstance(ctx).refreshChannels();
+                    /*String latestUserShown = PrefGetter.getUserId(ctx.getApplicationContext());
                     if (!latestUserShown.isEmpty()) {
                         String phoneNumber = PrefGetter.getPhoneNumber(ctx.getApplicationContext());
                         String userId = PrefGetter.getUserId(ctx.getApplicationContext());
                         if (!phoneNumber.isEmpty() && !userId.equals("-1"))
                             updateUserModel(latestUserShown, userId, getUpdatedUserModel(latestUserShown, phoneNumber));
-                    }
+                    }*/
                 }
 
             } catch (Exception e) {

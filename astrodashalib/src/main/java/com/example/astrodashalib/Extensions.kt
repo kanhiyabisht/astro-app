@@ -16,10 +16,10 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
-import com.facebook.accountkit.ui.AccountKitActivity
-import com.facebook.accountkit.ui.AccountKitConfiguration
-import com.facebook.accountkit.ui.LoginType
-import com.facebook.accountkit.ui.ThemeUIManager
+//import com.facebook.accountkit.ui.AccountKitActivity
+//import com.facebook.accountkit.ui.AccountKitConfiguration
+//import com.facebook.accountkit.ui.LoginType
+//import com.facebook.accountkit.ui.ThemeUIManager
 import java.text.SimpleDateFormat
 import java.util.*
 

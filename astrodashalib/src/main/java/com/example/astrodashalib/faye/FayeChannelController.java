@@ -79,6 +79,7 @@ public class FayeChannelController implements GenericDataAccessInterface {
 
     private void createRpcGetChannel(final GenericCallback callback) {
         JSONObject extension = Util.getExtension(context.getApplicationContext());
+        Log.e("EXTENSION",extension.toString());
         String userId = extension.optString("user_id");
         String channelName = "/rpc/get/" + userId;
         rpcGetChannel = RpcGetChannel.getInstance(new Handler(), Util.FAYE_URL, channelName, extension);
@@ -136,6 +137,7 @@ public class FayeChannelController implements GenericDataAccessInterface {
     }
 
     protected boolean broadCastMessageReceived(JSONObject message) {
+        Log.e("FCC", "broadcast: "+message );
         Log.e(LOG_TAG, "New Faye Message");
         BroadcastEventHandler broadcastEventHandler = new BroadcastEventHandler(context);
         broadcastEventHandler.execute(message);
@@ -144,6 +146,7 @@ public class FayeChannelController implements GenericDataAccessInterface {
 
     private void createRpcPostChannel(final GenericCallback callback) {
         JSONObject extension = Util.getExtension(context.getApplicationContext());
+        Log.e("EXTENSION",extension.toString());
         String userId = extension.optString("user_id");
         String channelName = "/rpc/post/" + userId;
         rpcPostChannel = RpcPostChannel.getInstance(new Handler(), Util.FAYE_URL, channelName, extension);

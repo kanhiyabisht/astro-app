@@ -73,8 +73,8 @@ dependencies {
     compile 'com.orhanobut:dialogplus:1.11@aar'
     compile 'com.android.support.constraint:constraint-layout:1.0.2'
     compile 'com.airbnb.android:lottie:2.0.0'
-    compile 'com.facebook.android:facebook-android-sdk:4.15.0'
-    compile 'com.facebook.android:account-kit-sdk:4.23.0'
+//    compile 'com.facebook.android:facebook-android-sdk:4.15.0'
+//    compile 'com.facebook.android:account-kit-sdk:4.23.0'
     compile 'com.squareup.okhttp3:logging-interceptor:3.3.1'
     compile 'com.romandanylyk:pageindicatorview:0.2.0@aar'
     compile 'com.google.code.gson:gson:2.8.0'
@@ -102,3 +102,5 @@ dependencies {
 repositories {
     mavenCentral()
 }
+
+//apply plugin: 'com.google.gms.google-services'

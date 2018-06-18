@@ -15,16 +15,16 @@ object Util {
     val USER_IMAGE="https://lh3.googleusercontent.com/0MLZOE65TMERUEo9SZPFJpxNRHmWrLYftarhmKAk_8FQkvg0tmj3GmfRGhEzB-lMvrA=w300"
 
     @JvmField
-    val FAYE_URL = "wss://tellmyluck.vistaura.in:443/chatService"
+    val FAYE_URL = "wss://stage-chat.astroscience-backend.com:443/chatService"
 
     @JvmField
-    val CHAT_BASE_URL = "https://tellmyluck.vistaura.in/"
+    val CHAT_BASE_URL = "https://stage-chat.astroscience-backend.com/"
 
     @JvmStatic
     fun getExtension(context: Context) :JSONObject{
         val userSchemaObj = JSONObject()
         try {
-            val userModel = Gson().fromJson(getUserModel(getLatestUserShown(context),context), UserModel::class.java)
+            val userModel = Gson().fromJson(getUserModel(getUserId(context),context), UserModel::class.java)
             val userId = getUserId(context)
             userSchemaObj.apply {
 //                put("user_id", "5647070f779447110a3c37fa")

@@ -1,6 +1,5 @@
 package com.example.astrodashalib.view.modules.chat
 
-import android.app.FragmentTransaction
 import android.content.ClipboardManager
 import android.content.Context
 import android.content.Intent
@@ -8,23 +7,20 @@ import android.content.IntentFilter
 import android.os.AsyncTask
 import android.os.Build
 import android.os.Bundle
-import android.support.v4.app.Fragment
-import android.support.v4.view.GravityCompat
-import android.support.v7.app.ActionBarDrawerToggle
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.LinearLayoutManager
 import android.util.Log
 import android.view.ActionMode
 import android.view.Gravity
 import android.view.View
-
-import com.google.gson.Gson
 import com.example.astrodashalib.*
-import com.example.astrodashalib.R
 import com.example.astrodashalib.chat.messageController.MessageControllerFactory
 import com.example.astrodashalib.chat.messageController.MessageControllerInterface
 import com.example.astrodashalib.data.GooglePaymentDetails
-import com.example.astrodashalib.data.models.*
+import com.example.astrodashalib.data.models.ChatModel
+import com.example.astrodashalib.data.models.DialogListOption
+import com.example.astrodashalib.data.models.PaymentDetail
+import com.example.astrodashalib.data.models.UserModel
 import com.example.astrodashalib.generic.GenericCallback
 import com.example.astrodashalib.generic.GenericQueryCallback
 import com.example.astrodashalib.helper.*
@@ -34,15 +30,14 @@ import com.example.astrodashalib.service.faye.FayeIntentService
 import com.example.astrodashalib.service.faye.FayeService
 import com.example.astrodashalib.util.IabBroadcastReceiver
 import com.example.astrodashalib.util.IabHelper
-import com.example.astrodashalib.view.SampleQuestionListFragment
 import com.example.astrodashalib.view.adapter.ChatAdapter
 import com.example.astrodashalib.view.adapter.SimpleDialogAdapter
 import com.example.astrodashalib.view.widgets.dialog.MaterialDialog
 import com.example.astrodashalib.view.widgets.dialog.ProgressDialogFragment
+import com.google.gson.Gson
 import com.orhanobut.dialogplus.DialogPlus
 import com.orhanobut.dialogplus.OnItemClickListener
 import kotlinx.android.synthetic.main.activity_chat_detail.*
-import kotlinx.android.synthetic.main.app_bar_chat_detail.*
 import kotlinx.android.synthetic.main.progress_layout.*
 import org.json.JSONObject
 import java.text.SimpleDateFormat
@@ -50,7 +45,7 @@ import java.util.*
 import kotlin.collections.ArrayList
 
 
-class ChatDetailActivity : AppCompatActivity(), ChatDetailContract.View, SampleQuestionListFragment.OnFragmentInteractionListener, ChatAdapter.OnItemClickListener, ChatReciever.ChatRecieverInterface {
+class ChatDetailActivity : AppCompatActivity(), ChatDetailContract.View, ChatAdapter.OnItemClickListener, ChatReciever.ChatRecieverInterface {
 
     var chatModelList: ArrayList<ChatModel> = ArrayList()
     var loginUserId: String? = null
@@ -71,8 +66,7 @@ class ChatDetailActivity : AppCompatActivity(), ChatDetailContract.View, SampleQ
     var copyChatModel: ChatModel? = null
     private var dialog: MaterialDialog? = null
     var paymentList: ArrayList<DialogListOption> = arrayListOf(
-            DialogListOption("Google Wallet", R.drawable.google_wallet_icon),
-            DialogListOption("Paytm", R.drawable.paytm_icon)
+            DialogListOption("Google Wallet", R.drawable.google_wallet_icon)
     )
 
     var messageActionList: ArrayList<DialogListOption> = ArrayList()
@@ -80,17 +74,19 @@ class ChatDetailActivity : AppCompatActivity(), ChatDetailContract.View, SampleQ
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_chat_detail)
-        setSupportActionBar(toolbar)
+
+
         chatModelList = ArrayList()
         mPresenter = ChatDetailPresenter()
         mPresenter?.attachView(this)
         setupIabHelper()
-
-        profileIv.setOnClickListener {
-            drawerLayout.toggleDrawer(GravityCompat.END)
-        }
-
-
+        val deviceId = "4d8e6a8bc968f22cb850043d096ca250250932f8f93cfbfbb67433474da72ff9"
+        setDeviceId(deviceId, applicationContext)
+        val userId = "5b27580d1d0700650c78c5fe";
+        setUserId(userId,applicationContext)
+        setCrmUserId("5acc4629840d00b20dee2ba0",applicationContext)
+        val userModel = UserModel("5b27580d1d0700650c78c5fe","","Akash","","","","","","","","","",getDeviceId(applicationContext),"","",1);
+        setUserModel(userId,Gson().toJson(userModel),applicationContext);
         loginUserId = getUserId(applicationContext)
         chatUserId = getCrmUserId(applicationContext)
 
@@ -129,7 +125,7 @@ class ChatDetailActivity : AppCompatActivity(), ChatDetailContract.View, SampleQ
                 }
             }
 
-            if (getUserModel(getLatestUserShown(applicationContext),applicationContext) != null)
+            if (getUserModel(getUserId(applicationContext),applicationContext) != null)
                 onUserDataChange()
 
         } catch (e: Exception) {
@@ -180,8 +176,6 @@ class ChatDetailActivity : AppCompatActivity(), ChatDetailContract.View, SampleQ
     }
 
     var mOnIabSetupFinishedListener: IabHelper.OnIabSetupFinishedListener = IabHelper.OnIabSetupFinishedListener { result ->
-        Log.d(TAG, "Setup finished.")
-
         if (!result.isSuccess) {
             isSetupFinished = false
             complain("Problem setting up in-app billing: " + result)
@@ -245,7 +239,7 @@ class ChatDetailActivity : AppCompatActivity(), ChatDetailContract.View, SampleQ
                 Log.d(TAG, "Consumption successful. Provisioning.")
                 val googlePaymentDetails = GooglePaymentDetails(purchase)
                 val userId = getUserId(applicationContext)
-                val mUserModel = Gson().fromJson(getUserModel(getLatestUserShown(applicationContext),applicationContext), UserModel::class.java)
+                val mUserModel = Gson().fromJson(getUserModel(getUserId(applicationContext),applicationContext), UserModel::class.java)
                 val userName = mUserModel.userName
                 val paymentDetail = PaymentDetail(getIndTotalRemedyCost().toString(), "", "", userName, Constant.GOOGLE_WALLET, "", userId,
                         chat_edit_text.text.toString(), Gson().toJson(googlePaymentDetails, GooglePaymentDetails::class.java), googlePaymentDetails.mPurchaseTime.toString())
@@ -685,25 +679,6 @@ class ChatDetailActivity : AppCompatActivity(), ChatDetailContract.View, SampleQ
         setCrmUserId(id,applicationContext)
     }
 
-
-    override fun closeDrawer() {
-        onBackPressed()
-    }
-
-    override fun onBackPressed() {
-        when {
-            drawerLayout.isDrawerOpen(GravityCompat.START) -> drawerLayout.closeDrawer(GravityCompat.START)
-            drawerLayout.isDrawerOpen(GravityCompat.END) -> {
-
-                if (supportFragmentManager.backStackEntryCount > 0)
-                    supportFragmentManager.popBackStack()
-                else
-                    drawerLayout.closeDrawer(GravityCompat.END)
-            }
-            else -> super.onBackPressed()
-        }
-    }
-
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent) {
         mHelper?.handleActivityResult(requestCode, resultCode, data)
     }
@@ -711,7 +686,7 @@ class ChatDetailActivity : AppCompatActivity(), ChatDetailContract.View, SampleQ
 
     override fun onUserUpdateSuccess(userModel: UserModel) {
         setEmail(userModel.email,applicationContext)
-        setUserModel(getLatestUserShown(applicationContext), Gson().toJson(userModel),applicationContext)
+        setUserModel(getUserId(applicationContext), Gson().toJson(userModel),applicationContext)
     }
 
     override fun onUserUpdateError() {

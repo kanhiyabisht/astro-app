@@ -17,4 +17,17 @@
         android:backgroundTint="@color/colorAstro"
         tools:layout_editor_absoluteY="218dp" />
 
+
+    <Button
+        android:id="@+id/open_chat_btn"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+
+        android:layout_margin="20dp"
+        android:text="Chat screen"
+        android:textColor="@color/white"
+        android:layout_marginTop="50dp"
+        android:backgroundTint="@color/colorAstro"
+         />
+
 </RelativeLayout>

@@ -21,7 +21,7 @@ import java.util.*
 class MessageController(val context: Context) : MessageControllerInterface {
 
     var timestamp: Double = 0.0
-    var fromUser: UserModel? = Gson().fromJson(getUserModel(getLatestUserShown(context.applicationContext),context.applicationContext), UserModel::class.java)
+    var fromUser: UserModel? = Gson().fromJson(getUserModel(getUserId(context.applicationContext),context.applicationContext), UserModel::class.java)
     var genericController: GenericControllerInterface = GenericControllerFactory.getGenericControllerObj(context)
 
 
@@ -29,7 +29,7 @@ class MessageController(val context: Context) : MessageControllerInterface {
         val toUserId = chatUserId
         timestamp = DateTimeUtil.getCurrentTimestampSeconds().toDouble()
         try {
-            fromUser = Gson().fromJson(getUserModel(getLatestUserShown(context.applicationContext),context.applicationContext), UserModel::class.java)
+            fromUser = Gson().fromJson(getUserModel(getUserId(context.applicationContext),context.applicationContext), UserModel::class.java)
             Log.e(LOG_TAG, timestamp.toString())
 
             val chatModel = ChatModel(sendData, toUserId, getUserId(context.applicationContext), fromUser?.userName, timestamp, false)
@@ -68,7 +68,7 @@ class MessageController(val context: Context) : MessageControllerInterface {
     override fun saveChat(sendData: String?, chatUserId: String?, chatUserImage: String?, chatUserName: String?): ChatModel {
         val toUserId = chatUserId
         timestamp = DateTimeUtil.getCurrentTimestampSeconds().toDouble()
-        fromUser = Gson().fromJson(getUserModel(getLatestUserShown(context.applicationContext),context.applicationContext), UserModel::class.java)
+        fromUser = Gson().fromJson(getUserModel(getUserId(context.applicationContext),context.applicationContext), UserModel::class.java)
         Log.e(LOG_TAG, timestamp.toString())
 
         val chatModel = ChatModel(sendData, toUserId, getUserId(context.applicationContext), fromUser?.userName, timestamp, false)

@@ -244,22 +244,6 @@ fun getUserModel(key: String,context: Context): String? {
     return getString(key,context)
 }
 
-fun setLatestUserAddedCount(count: Int,context: Context) {
-    set(LATEST_USER_ADDED_COUNT, count,context)
-}
-
-fun getLatestUserAddedCount(context: Context): Int {
-    return getInt(LATEST_USER_ADDED_COUNT, -1,context)
-}
-
-fun setLatestUserShown(userNameKey: String,context: Context) {
-    set(LATEST_USER_SHOWN, userNameKey,context)
-}
-
-fun getLatestUserShown(context: Context): String {
-    return getString(LATEST_USER_SHOWN, "",context) ?: ""
-}
-
 fun setLastChatTimestamp(time: String,context: Context) {
     val bigDecimal = BigDecimal(time)
     set(LAST_CHAT_TIMESTAMP, bigDecimal.toString(),context)

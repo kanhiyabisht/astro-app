@@ -26,13 +26,6 @@
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme"
             android:windowSoftInputMode="stateHidden|adjustResize" />
-        <activity
-            android:name=".view.SplashScreen"
-            android:screenOrientation="portrait">
-        </activity>
-        <activity
-            android:name=".view.modules.phoneVerification.PhoneVerificationActivity"
-            android:screenOrientation="portrait" />
 
 
         <receiver android:name=".generic.NetworkChangeReciever">
@@ -76,10 +69,6 @@
                 <action android:name="com.google.firebase.INSTANCE_ID_EVENT" />
             </intent-filter>
         </service>
-
-        <activity android:name=".view.ViewRemedyActivity"
-            android:theme="@style/OldAppTheme"
-            android:screenOrientation="portrait"/>
     </application>
 
 </manifest>

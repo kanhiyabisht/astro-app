@@ -11,12 +11,6 @@ import rx.Observable
  */
 interface PaymentService {
 
-    @POST("/paytm/checksum")
-    fun getPaytmHash(@Header("key") secretValue: String, @Body paytmHashRequestBody: PaytmHashRequestBody): Observable<PaytmHashResponse>
-
-    @POST("/paytm/getStatus")
-    fun getPaytmOrderStatus(@Header("key") secretValue: String, @Body paytmOrderStatusBody: PaytmOrderStatusBody): Observable<PaytmOrderStatusDetail>
-
     @POST("/payment")
     fun postPaymentDetails(@Header("key") secretValue: String, @Body paymentDetail: PaymentDetail, @Header("user_id") userId: String): Observable<StatusModel>
 }
