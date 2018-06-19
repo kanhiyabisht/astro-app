@@ -17,10 +17,9 @@ import com.example.astrodashalib.R
 
 class ProgressDialogFragment : DialogFragment() {
 
-
     @SuppressLint("RestrictedApi")
-    override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        val contextThemeWrapper = ContextThemeWrapper(context, context.theme)
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+        val contextThemeWrapper = ContextThemeWrapper(context, context?.theme)
         val themeAwareInflater = inflater?.cloneInContext(contextThemeWrapper)
         val view = themeAwareInflater?.inflate(R.layout.fragment_progress_dialog, container, false)
         return view

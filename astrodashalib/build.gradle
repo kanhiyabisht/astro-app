@@ -2,7 +2,7 @@ apply plugin: 'com.android.library'
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
 android {
-    compileSdkVersion 25
+    compileSdkVersion 27
     buildToolsVersion '27.0.3'
     defaultConfig {
         minSdkVersion 16
@@ -38,7 +38,7 @@ android {
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     ext {
-        supportVersion = '25.4.0'
+        supportVersion = '27.0.2'
         daggerVersion = '2.9'
         retrofit = '2.1.0'
         firebaseVersion = '10.2.1'
