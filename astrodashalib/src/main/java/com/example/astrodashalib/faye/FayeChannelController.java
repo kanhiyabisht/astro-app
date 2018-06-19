@@ -50,7 +50,7 @@ public class FayeChannelController implements GenericDataAccessInterface {
 
     public boolean createFayeChannels(final GenericCallback genericCallback) {
         Log.e("FCC", "createFayeChannels: " );
-        if (!PrefGetter.getDeviceId(context.getApplicationContext()).isEmpty() && !PrefGetter.getUserId(context.getApplicationContext()).equals("-1")) {
+        if (!PrefGetter.getFayeToken(context.getApplicationContext()).isEmpty() && !PrefGetter.getDeviceId(context.getApplicationContext()).isEmpty() && !PrefGetter.getUserId(context.getApplicationContext()).equals("-1")) {
             createRpcGetChannel(new GenericCallback() {
                 @Override
                 public void callback(JSONObject error, Object object) {

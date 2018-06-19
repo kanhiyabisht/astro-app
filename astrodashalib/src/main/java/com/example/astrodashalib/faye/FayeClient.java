@@ -185,6 +185,7 @@ public class FayeClient implements WebSocketClient.Listener {
 
     private void disconnectWebSocketClient() {
         try {
+            Log.e(TAG, "disconnectWebSocketClient 197");
             closeWebSocketConnection();
             mClient = null;
         }catch (Exception e){
@@ -194,7 +195,7 @@ public class FayeClient implements WebSocketClient.Listener {
 
     public void closeWebSocketConnection() {
 
-        Log.e(TAG, "socket disconnected");
+        Log.e(TAG, "socket disconnected 197");
 
         mClient.disconnect();
         mClient.quitHandlerThread();
@@ -289,7 +290,7 @@ public class FayeClient implements WebSocketClient.Listener {
      */
     public void disconnect() {
 
-        Log.i(TAG, "socket disconnected");
+        Log.i(TAG, "socket disconnected 292");
 
         try {
 

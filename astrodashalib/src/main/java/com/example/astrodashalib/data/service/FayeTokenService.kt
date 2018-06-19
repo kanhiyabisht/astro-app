@@ -12,5 +12,5 @@ import rx.Observable
 interface FayeTokenService {
 
     @GET("/token/{user_id}")
-    fun getFayeToken(@Path("user_id") userId: String,@Header("key") secretValue: String,  @Header("chat-key") chatKey: String?,@Header("chat-secret") chatSecret: String?): Observable<FayeToken>
+    fun getFayeToken(@Path("user_id") userId: String,@Header("key") secretValue: String,  @Header("pmr-chat-key") chatKey: String?,@Header("pmr-chat-secret") chatSecret: String?): Observable<FayeToken>
 }

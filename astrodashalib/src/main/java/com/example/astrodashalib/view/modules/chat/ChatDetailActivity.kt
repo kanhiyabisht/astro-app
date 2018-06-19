@@ -80,12 +80,13 @@ class ChatDetailActivity : AppCompatActivity(), ChatDetailContract.View, ChatAda
         mPresenter = ChatDetailPresenter()
         mPresenter?.attachView(this)
         setupIabHelper()
-        val deviceId = "4d8e6a8bc968f22cb850043d096ca250250932f8f93cfbfbb67433474da72ff9"
+        val deviceId = "4d8e6a8bc968f22cb850043d096ca250250932f8f93cfbfbb67433474da72f89"
         setDeviceId(deviceId, applicationContext)
         val userId = "5b27580d1d0700650c78c5fe";
+        val crmUserId = "5acc4629840d00b20dee2ba0";
         setUserId(userId,applicationContext)
-        setCrmUserId("5acc4629840d00b20dee2ba0",applicationContext)
-        val userModel = UserModel("5b27580d1d0700650c78c5fe","","Akash","","","","","","","","","",getDeviceId(applicationContext),"","",1);
+        setCrmUserId(crmUserId,applicationContext)
+        val userModel = UserModel(userId,"","Akash","","","","","","","","","",getDeviceId(applicationContext),"","",1);
         setUserModel(userId,Gson().toJson(userModel),applicationContext);
         loginUserId = getUserId(applicationContext)
         chatUserId = getCrmUserId(applicationContext)
@@ -118,7 +119,7 @@ class ChatDetailActivity : AppCompatActivity(), ChatDetailContract.View, ChatAda
                         coordinator_ll.hideKeyboard()
                     } else {
                         messageController?.sendChat(chat_edit_text.text.toString(), chatUserId, "", "")
-                        setFreeQuestionCount(0,applicationContext)
+                        setFreeQuestionCount(1,applicationContext)
                     }
 
                     chat_edit_text.setText("")
@@ -351,7 +352,7 @@ class ChatDetailActivity : AppCompatActivity(), ChatDetailContract.View, ChatAda
                 override fun callback(error: JSONObject, list: ArrayList<ChatModel>) {
                     Log.e("chatList",list.size.toString())
                     if (list.isNotEmpty()) {
-                        setFreeQuestionCount(0,applicationContext)
+                        setFreeQuestionCount(1,applicationContext)
                     }
                     executeInsertDatesTask(list, isScreenOpenFirstTime, true)
                 }
@@ -679,6 +680,7 @@ class ChatDetailActivity : AppCompatActivity(), ChatDetailContract.View, ChatAda
         setCrmUserId(id,applicationContext)
     }
 
+
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent) {
         mHelper?.handleActivityResult(requestCode, resultCode, data)
     }
@@ -702,7 +704,7 @@ class ChatDetailActivity : AppCompatActivity(), ChatDetailContract.View, ChatAda
                 it.cancel(false)
             }
 
-            stopService(Intent(this, FayeService::class.java))
+//            stopService(Intent(this, FayeService::class.java))
             unregisterReceiver(reciever)
             super.onDestroy();
         } catch (e: Exception) {

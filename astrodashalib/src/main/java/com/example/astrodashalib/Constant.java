@@ -33,8 +33,8 @@ public class Constant {
 
     public static String KEY = "key";
     public static String KEY_VALUE = "qYLL2KNmMDPt2-Z*-g&_eSPh+";
-    public static String CHAT_KEY = "android0873954";
-    public static String CHAT_SECRET = "16r4Gcuvsf";
+    public static String CHAT_KEY = "android7259455066";
+    public static String CHAT_SECRET = "eyJ0eXAiOiJK";
 
     public static String CUSTOMER_CARE_NO = "0124 6660999";
 

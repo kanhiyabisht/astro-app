@@ -103,7 +103,7 @@ public class FayeService extends Service {
     private void init() {
         try {
             isAlive = true;
-            fayeChannels = FayeChannelController.newInstance(context);
+//            fayeChannels = FayeChannelController.newInstance(context);
             Log.e(TAG, "OnCreating fayeChannels");
             String fayeToken = PrefGetter.getFayeToken(context);
             boolean bool = (fayeToken.isEmpty()) ? fetchTokenFromServer() : createFayeChannelAndStartFetchNewChatService();
