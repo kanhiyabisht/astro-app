@@ -42,7 +42,7 @@ public class DeviceIdService extends IntentService {
             try {
                 ctx = DeviceIdService.this;
 //                regid = FirebaseInstanceId.getInstance().getToken();
-                regid="4d8e6a8bc968f22cb850043d096ca250250932f8f93cfbfbb67433474da72f89";
+                regid="4d8e6a8bc968f22cb850043d096ca250250932f8f93cfbfbb67433474da72f99";
                 if (regid != null && !regid.equals(PrefGetter.getDeviceId(ctx.getApplicationContext()))) {
                     PrefGetter.setDeviceId(regid,ctx.getApplicationContext());
                     if (!PrefGetter.getUserId(ctx.getApplicationContext()).equals("-1"))

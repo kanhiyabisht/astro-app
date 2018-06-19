@@ -80,10 +80,10 @@ class ChatDetailActivity : AppCompatActivity(), ChatDetailContract.View, ChatAda
         mPresenter = ChatDetailPresenter()
         mPresenter?.attachView(this)
         setupIabHelper()
-        val deviceId = "4d8e6a8bc968f22cb850043d096ca250250932f8f93cfbfbb67433474da72f89"
+        val deviceId = "4d8e6a8bc968f22cb850043d096ca250250932f8f93cfbfbb67433474da72f99"
         setDeviceId(deviceId, applicationContext)
-        val userId = "5b27580d1d0700650c78c5fe";
-        val crmUserId = "5acc4629840d00b20dee2ba0";
+        val crmUserId = "5b27580d1d0700650c78c5fe";
+        val userId = "5acc4629840d00b20dee2ba0";
         setUserId(userId,applicationContext)
         setCrmUserId(crmUserId,applicationContext)
         val userModel = UserModel(userId,"","Akash","","","","","","","","","",getDeviceId(applicationContext),"","",1);
