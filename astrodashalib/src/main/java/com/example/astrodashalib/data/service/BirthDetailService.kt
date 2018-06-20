@@ -1,6 +1,6 @@
 package com.example.astrodashalib.data.service
 
-import com.example.astrodashalib.data.models.Place
+import com.example.astrodashalib.model.Place
 import retrofit2.http.GET
 import retrofit2.http.Header
 import retrofit2.http.Path
