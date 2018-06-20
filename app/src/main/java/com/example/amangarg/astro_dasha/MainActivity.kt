@@ -10,6 +10,7 @@ import com.example.astrodashalib.DashaData
 import com.example.astrodashalib.interfaces.DashaCallback
 import com.example.astrodashalib.model.GenerateNewRequestBody
 import com.example.astrodashalib.model.Place
+import com.example.astrodashalib.view.modules.chat.ChatDetailActivity
 import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : AppCompatActivity() {
@@ -54,6 +55,10 @@ class MainActivity : AppCompatActivity() {
                 }
             })
 
+        }
+
+        open_chat_btn.setOnClickListener{
+            startActivity(ChatDetailActivity.createIntent(this@MainActivity))
         }
     }
 
