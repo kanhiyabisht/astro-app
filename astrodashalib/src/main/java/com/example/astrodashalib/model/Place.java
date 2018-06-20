@@ -46,11 +46,15 @@ public class Place implements Serializable {
 
     @Override
     public boolean equals(Object obj) {
+        if (null != obj && obj instanceof String) {
+
+            return obj.equals(place);
+        }
         return super.equals(obj);
     }
 
     @Override
     public String toString() {
-        return super.toString();
+        return place;
     }
 }
