@@ -72,10 +72,10 @@ class ChatDetailActivity : AppCompatActivity(), ChatDetailContract.View, ChatAda
     var messageActionList: ArrayList<DialogListOption> = ArrayList()
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        val style = intent.getIntExtra("style",0)
+        setTheme(style)
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_chat_detail)
-
-
         chatModelList = ArrayList()
         mPresenter = ChatDetailPresenter()
         mPresenter?.attachView(this)
@@ -743,6 +743,13 @@ class ChatDetailActivity : AppCompatActivity(), ChatDetailContract.View, ChatAda
         @JvmField
         val RC_REQUEST = 10001
 
+
+        @JvmStatic
+        fun createIntent(context: Context?,style: Int): Intent {
+            val intent = Intent(context, ChatDetailActivity::class.java)
+            intent.putExtra("style",style)
+            return intent
+        }
 
         @JvmStatic
         fun createIntent(context: Context?): Intent {

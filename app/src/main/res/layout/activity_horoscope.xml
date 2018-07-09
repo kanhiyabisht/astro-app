@@ -38,7 +38,7 @@
                         android:padding="10dp"
                         android:text="कुंडली के बारे में"
                         android:textAlignment="center"
-                        android:textColor="@color/colorAstro"
+                        android:textColor="@color/colorAccent"
                         android:textSize="22sp"
                         android:textStyle="bold" />
 
@@ -60,7 +60,7 @@
                         android:layout_weight="1"
                         android:padding="10dp"
                         android:text="शुक्र"
-                        android:textColor="@color/colorAstro"
+                        android:textColor="@color/colorAccent"
                         android:textSize="18sp" />
 
                     <TextView
@@ -70,7 +70,7 @@
                         android:layout_weight="1"
                         android:padding="10dp"
                         android:text="शुक्र"
-                        android:textColor="@color/colorAstro"
+                        android:textColor="@color/colorAccent"
                         android:textSize="18sp" />
                 </LinearLayout>
 
@@ -89,7 +89,7 @@
                         android:layout_weight="1"
                         android:padding="10dp"
                         android:text="शुक्र"
-                        android:textColor="@color/colorAstro"
+                        android:textColor="@color/colorAccent"
                         android:textSize="18sp" />
 
                     <TextView
@@ -99,7 +99,7 @@
                         android:layout_weight="1"
                         android:padding="10dp"
                         android:text="शुक्र"
-                        android:textColor="@color/colorAstro"
+                        android:textColor="@color/colorAccent"
                         android:textSize="18sp" />
                 </LinearLayout>
 
@@ -118,7 +118,7 @@
                         android:layout_weight="1"
                         android:padding="10dp"
                         android:text="शुक्र"
-                        android:textColor="@color/colorAstro"
+                        android:textColor="@color/colorAccent"
                         android:textSize="18sp" />
 
                     <TextView
@@ -128,7 +128,7 @@
                         android:layout_weight="1"
                         android:padding="10dp"
                         android:text="शुक्र"
-                        android:textColor="@color/colorAstro"
+                        android:textColor="@color/colorAccent"
                         android:textSize="18sp" />
                 </LinearLayout>
 
@@ -146,7 +146,7 @@
                         android:layout_weight="1"
                         android:padding="10dp"
                         android:text="शुक्र"
-                        android:textColor="@color/colorAstro"
+                        android:textColor="@color/colorAccent"
                         android:textSize="18sp" />
 
                     <TextView
@@ -156,7 +156,7 @@
                         android:layout_weight="1"
                         android:padding="10dp"
                         android:text="शुक्र"
-                        android:textColor="@color/colorAstro"
+                        android:textColor="@color/colorAccent"
                         android:textSize="18sp" />
                 </LinearLayout>
 
@@ -176,7 +176,7 @@
                         android:layout_weight="1"
                         android:padding="10dp"
                         android:text="शुक्र"
-                        android:textColor="@color/colorAstro"
+                        android:textColor="@color/colorAccent"
                         android:textSize="18sp" />
 
                     <TextView
@@ -186,7 +186,7 @@
                         android:layout_weight="1"
                         android:padding="10dp"
                         android:text="शुक्र"
-                        android:textColor="@color/colorAstro"
+                        android:textColor="@color/colorAccent"
                         android:textSize="18sp" />
                 </LinearLayout>
 
@@ -205,7 +205,7 @@
                         android:layout_weight="1"
                         android:padding="10dp"
                         android:text="शुक्र"
-                        android:textColor="@color/colorAstro"
+                        android:textColor="@color/colorAccent"
                         android:textSize="18sp" />
 
                     <TextView
@@ -215,7 +215,7 @@
                         android:layout_weight="1"
                         android:padding="10dp"
                         android:text="शुक्र"
-                        android:textColor="@color/colorAstro"
+                        android:textColor="@color/colorAccent"
                         android:textSize="18sp" />
                 </LinearLayout>
 
@@ -234,7 +234,7 @@
                         android:layout_weight="1"
                         android:padding="10dp"
                         android:text="शुक्र"
-                        android:textColor="@color/colorAstro"
+                        android:textColor="@color/colorAccent"
                         android:textSize="18sp" />
 
                     <TextView
@@ -244,7 +244,7 @@
                         android:layout_weight="1"
                         android:padding="10dp"
                         android:text="शुक्र"
-                        android:textColor="@color/colorAstro"
+                        android:textColor="@color/colorAccent"
                         android:textSize="18sp" />
                 </LinearLayout>
 
@@ -262,7 +262,7 @@
                         android:layout_weight="1"
                         android:padding="10dp"
                         android:text="शुक्र"
-                        android:textColor="@color/colorAstro"
+                        android:textColor="@color/colorAccent"
                         android:textSize="18sp" />
 
                     <TextView
@@ -272,7 +272,7 @@
                         android:layout_weight="1"
                         android:padding="10dp"
                         android:text="शुक्र"
-                        android:textColor="@color/colorAstro"
+                        android:textColor="@color/colorAccent"
                         android:textSize="18sp" />
                 </LinearLayout>
 
@@ -292,7 +292,7 @@
                         android:layout_weight="1"
                         android:padding="10dp"
                         android:text="शुक्र"
-                        android:textColor="@color/colorAstro"
+                        android:textColor="@color/colorAccent"
                         android:textSize="18sp" />
 
                     <TextView
@@ -302,7 +302,7 @@
                         android:layout_weight="1"
                         android:padding="10dp"
                         android:text="शुक्र"
-                        android:textColor="@color/colorAstro"
+                        android:textColor="@color/colorAccent"
                         android:textSize="18sp" />
                 </LinearLayout>
 
@@ -321,7 +321,7 @@
                         android:layout_weight="1"
                         android:padding="10dp"
                         android:text="शुक्र"
-                        android:textColor="@color/colorAstro"
+                        android:textColor="@color/colorAccent"
                         android:textSize="18sp" />
 
                     <TextView
@@ -331,7 +331,7 @@
                         android:layout_weight="1"
                         android:padding="10dp"
                         android:text="शुक्र"
-                        android:textColor="@color/colorAstro"
+                        android:textColor="@color/colorAccent"
                         android:textSize="18sp" />
                 </LinearLayout>
 
@@ -350,7 +350,7 @@
                         android:layout_weight="1"
                         android:padding="10dp"
                         android:text="शुक्र"
-                        android:textColor="@color/colorAstro"
+                        android:textColor="@color/colorAccent"
                         android:textSize="18sp" />
 
                     <TextView
@@ -360,7 +360,7 @@
                         android:layout_weight="1"
                         android:padding="10dp"
                         android:text="शुक्र"
-                        android:textColor="@color/colorAstro"
+                        android:textColor="@color/colorAccent"
                         android:textSize="18sp" />
                 </LinearLayout>
 
@@ -378,7 +378,7 @@
                         android:layout_weight="1"
                         android:padding="10dp"
                         android:text="शुक्र"
-                        android:textColor="@color/colorAstro"
+                        android:textColor="@color/colorAccent"
                         android:textSize="18sp" />
 
                     <TextView
@@ -388,7 +388,7 @@
                         android:layout_weight="1"
                         android:padding="10dp"
                         android:text="शुक्र"
-                        android:textColor="@color/colorAstro"
+                        android:textColor="@color/colorAccent"
                         android:textSize="18sp" />
                 </LinearLayout>
 
@@ -406,7 +406,7 @@
                         android:layout_weight="1"
                         android:padding="10dp"
                         android:text="शुक्र"
-                        android:textColor="@color/colorAstro"
+                        android:textColor="@color/colorAccent"
                         android:textSize="18sp" />
 
                     <TextView
@@ -416,7 +416,7 @@
                         android:layout_weight="1"
                         android:padding="10dp"
                         android:text="शुक्र"
-                        android:textColor="@color/colorAstro"
+                        android:textColor="@color/colorAccent"
                         android:textSize="18sp" />
                 </LinearLayout>
 
@@ -434,7 +434,7 @@
                         android:padding="10dp"
                         android:text="ग्रहों के हालात"
                         android:textAlignment="center"
-                        android:textColor="@color/colorAstro"
+                        android:textColor="@color/colorAccent"
                         android:textSize="22sp"
                         android:textStyle="bold" />
 
@@ -455,7 +455,7 @@
                         android:layout_weight="1"
                         android:padding="10dp"
                         android:text="शुक्र"
-                        android:textColor="@color/colorAstro"
+                        android:textColor="@color/colorAccent"
                         android:textSize="18sp" />
 
                     <TextView
@@ -465,7 +465,7 @@
                         android:layout_weight="1"
                         android:padding="10dp"
                         android:text="शुक्र"
-                        android:textColor="@color/colorAstro"
+                        android:textColor="@color/colorAccent"
                         android:textSize="18sp" />
                 </LinearLayout>
 
@@ -484,7 +484,7 @@
                         android:layout_weight="1"
                         android:padding="10dp"
                         android:text="शुक्र"
-                        android:textColor="@color/colorAstro"
+                        android:textColor="@color/colorAccent"
                         android:textSize="18sp" />
 
                     <TextView
@@ -494,7 +494,7 @@
                         android:layout_weight="1"
                         android:padding="10dp"
                         android:text="शुक्र"
-                        android:textColor="@color/colorAstro"
+                        android:textColor="@color/colorAccent"
                         android:textSize="18sp" />
                 </LinearLayout>
 
@@ -513,7 +513,7 @@
                         android:layout_weight="1"
                         android:padding="10dp"
                         android:text="शुक्र"
-                        android:textColor="@color/colorAstro"
+                        android:textColor="@color/colorAccent"
                         android:textSize="18sp" />
 
                     <TextView
@@ -523,7 +523,7 @@
                         android:layout_weight="1"
                         android:padding="10dp"
                         android:text="शुक्र"
-                        android:textColor="@color/colorAstro"
+                        android:textColor="@color/colorAccent"
                         android:textSize="18sp" />
                 </LinearLayout>
 
@@ -542,7 +542,7 @@
                         android:layout_weight="1"
                         android:padding="10dp"
                         android:text="शुक्र"
-                        android:textColor="@color/colorAstro"
+                        android:textColor="@color/colorAccent"
                         android:textSize="18sp" />
 
                     <TextView
@@ -552,7 +552,7 @@
                         android:layout_weight="1"
                         android:padding="10dp"
                         android:text="शुक्र"
-                        android:textColor="@color/colorAstro"
+                        android:textColor="@color/colorAccent"
                         android:textSize="18sp" />
                 </LinearLayout>
 
@@ -571,7 +571,7 @@
                         android:layout_weight="1"
                         android:padding="10dp"
                         android:text="शुक्र"
-                        android:textColor="@color/colorAstro"
+                        android:textColor="@color/colorAccent"
                         android:textSize="18sp" />
 
                     <TextView
@@ -581,7 +581,7 @@
                         android:layout_weight="1"
                         android:padding="10dp"
                         android:text="शुक्र"
-                        android:textColor="@color/colorAstro"
+                        android:textColor="@color/colorAccent"
                         android:textSize="18sp" />
                 </LinearLayout>
 
@@ -600,7 +600,7 @@
                         android:layout_weight="1"
                         android:padding="10dp"
                         android:text="शुक्र"
-                        android:textColor="@color/colorAstro"
+                        android:textColor="@color/colorAccent"
                         android:textSize="18sp" />
 
                     <TextView
@@ -610,7 +610,7 @@
                         android:layout_weight="1"
                         android:padding="10dp"
                         android:text="शुक्र"
-                        android:textColor="@color/colorAstro"
+                        android:textColor="@color/colorAccent"
                         android:textSize="18sp" />
                 </LinearLayout>
 
@@ -629,7 +629,7 @@
                         android:layout_weight="1"
                         android:padding="10dp"
                         android:text="शुक्र"
-                        android:textColor="@color/colorAstro"
+                        android:textColor="@color/colorAccent"
                         android:textSize="18sp" />
 
                     <TextView
@@ -639,7 +639,7 @@
                         android:layout_weight="1"
                         android:padding="10dp"
                         android:text="शुक्र"
-                        android:textColor="@color/colorAstro"
+                        android:textColor="@color/colorAccent"
                         android:textSize="18sp" />
                 </LinearLayout>
 
@@ -658,7 +658,7 @@
                         android:layout_weight="1"
                         android:padding="10dp"
                         android:text="शुक्र"
-                        android:textColor="@color/colorAstro"
+                        android:textColor="@color/colorAccent"
                         android:textSize="18sp" />
 
                     <TextView
@@ -668,7 +668,7 @@
                         android:layout_weight="1"
                         android:padding="10dp"
                         android:text="शुक्र"
-                        android:textColor="@color/colorAstro"
+                        android:textColor="@color/colorAccent"
                         android:textSize="18sp" />
                 </LinearLayout>
 
@@ -687,7 +687,7 @@
                         android:layout_weight="1"
                         android:padding="10dp"
                         android:text="शुक्र"
-                        android:textColor="@color/colorAstro"
+                        android:textColor="@color/colorAccent"
                         android:textSize="18sp" />
 
                     <TextView
@@ -697,7 +697,7 @@
                         android:layout_weight="1"
                         android:padding="10dp"
                         android:text="शुक्र"
-                        android:textColor="@color/colorAstro"
+                        android:textColor="@color/colorAccent"
                         android:textSize="18sp" />
                 </LinearLayout>
 
@@ -725,7 +725,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginBottom="10dp"
                         android:text="क्या दान ना करें"
-                        android:textColor="@color/colorAstro"
+                        android:textColor="@color/colorAccent"
                         android:textSize="22sp" />
 
                     <TextView
@@ -752,7 +752,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginBottom="10dp"
                         android:text="क्या दान करें"
-                        android:textColor="@color/colorAstro"
+                        android:textColor="@color/colorAccent"
                         android:textSize="22sp" />
 
                     <TextView
@@ -779,7 +779,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginBottom="10dp"
                         android:text="किस रंग के कपड़े न पहनें। (निम्नलिखित रंगो के गहरे रंग धारण ना करें हल्के रंगो को धारण कर सकते हैं)"
-                        android:textColor="@color/colorAstro"
+                        android:textColor="@color/colorAccent"
                         android:textSize="22sp" />
 
                     <TextView

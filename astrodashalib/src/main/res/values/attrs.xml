@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <attr name="sendBtnImgColor" format="reference|color"/>
+    <attr name="sendBtnBgColor" format="reference|color"/>
+    <attr name="loaderColor" format="reference|color"/>
+    <attr name="dateBgColor" format="reference|color"/>
+    <attr name="dateTextColor" format="reference|color"/>
+    <attr name="outgoingChatBgColor" format="reference|color"/>
+    <attr name="outgoingChatTxtColor" format="reference|color"/>
+    <attr name="outgoingChatTxtLinkColor" format="reference|color"/>
+    <attr name="incomingChatBgColor" format="reference|color"/>
+    <attr name="incomingChatTxtColor" format="reference|color"/>
+    <attr name="incomingChatTxtLinkColor" format="reference|color"/>
+    <attr name="userTxtColor" format="reference|color"/>
+    <attr name="chatInputTxtColor" format="reference|color"/>
+    <attr name="chatInputTxtHintColor" format="reference|color"/>
+</resources>

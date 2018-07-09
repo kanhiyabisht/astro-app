@@ -14,7 +14,7 @@
         android:layout_width="40dp"
         android:layout_height="40dp"
         android:layout_margin="20dp"
-        app:indicatorColor="@color/colorAstro"
+        app:indicatorColor="@color/colorAccent"
         app:indicatorName="BallPulseIndicator"/>
 
     <TextView

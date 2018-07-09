@@ -58,7 +58,9 @@ class MainActivity : AppCompatActivity() {
         }
 
         open_chat_btn.setOnClickListener{
-            startActivity(ChatDetailActivity.createIntent(this@MainActivity))
+            val style = R.style.AppTheme1
+
+            startActivity(ChatDetailActivity.createIntent(this@MainActivity,style))
         }
     }
 

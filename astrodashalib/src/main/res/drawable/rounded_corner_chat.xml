@@ -3,9 +3,9 @@
 
     <stroke
         android:width="1dp"
-        android:color="#a8a8a8" />
+        android:color="?attr/dateBgColor" />
 
-    <solid android:color="#a8a8a8" />
+    <solid android:color="?attr/dateBgColor" />
 
     <padding
         android:left="1dp"

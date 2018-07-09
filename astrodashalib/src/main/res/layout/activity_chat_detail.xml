@@ -16,7 +16,6 @@
 
         <include layout="@layout/progress_layout" />
 
-
         <android.support.v7.widget.RecyclerView
             android:id="@+id/chatRecyclerView"
             android:layout_width="match_parent"
@@ -49,7 +48,9 @@
                 android:orientation="horizontal"
                 android:paddingBottom="15dp"
                 android:paddingLeft="12dp"
-                android:paddingRight="20dp">
+                android:paddingStart="12dp"
+                android:paddingRight="20dp"
+                android:paddingEnd="20dp">
 
                 <EditText
                     android:id="@+id/chat_edit_text"
@@ -62,7 +63,8 @@
                     android:hint="Type a message"
                     android:inputType="textMultiLine"
                     android:singleLine="false"
-                    android:textColor="@color/black"
+                    android:textColor="?attr/chatInputTxtColor"
+                    android:textColorHint="?attr/chatInputTxtHintColor"
                     android:textSize="18sp" />
 
             </LinearLayout>
@@ -72,9 +74,9 @@
                 android:layout_width="50dp"
                 android:layout_height="50dp"
                 android:layout_gravity="bottom"
-                android:background="@drawable/send_chat_bg"
+                android:background="@drawable/send_chat_btn_bg"
                 android:src="@drawable/send_icon"
-                android:tint="@color/white" />
+                android:tint="?attr/sendBtnImgColor" />
 
         </LinearLayout>
 

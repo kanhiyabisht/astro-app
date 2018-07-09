@@ -8,4 +8,42 @@
         <item name="colorAccent">@color/colorAccent</item>
     </style>
 
+    <style name="AppTheme1" parent="Theme.AppCompat.Light.NoActionBar">
+        <!-- Customize your theme here. -->
+        <item name="android:windowBackground">@color/gray_2</item>
+        <item name="windowActionModeOverlay">true</item>
+        <item name="colorPrimary">#527da3</item>
+        <item name="colorPrimaryDark">#426482</item>
+        <item name="colorAccent">#4991cc</item>
+
+        <item name="android:alertDialogTheme">@style/AlertDialogCustom1</item>
+        <item name="sendBtnImgColor">@android:color/white</item>
+        <item name="sendBtnBgColor">@color/colorAccent</item>
+        <item name="loaderColor">@color/colorAccent</item>
+        <item name="dateBgColor">@android:color/black</item>
+        <item name="dateTextColor">@android:color/white</item>
+        <item name="outgoingChatBgColor">@android:color/holo_green_dark</item>
+        <item name="outgoingChatTxtColor">@android:color/white</item>
+        <item name="outgoingChatTxtLinkColor">@android:color/black</item>
+        <item name="incomingChatBgColor">@android:color/white</item>
+        <item name="incomingChatTxtColor">@android:color/black</item>
+        <item name="incomingChatTxtLinkColor">@color/colorAccent</item>
+        <item name="userTxtColor">@android:color/black</item>
+        <item name="chatInputTxtColor">@android:color/black</item>
+        <item name="chatInputTxtHintColor">#a8a8a8</item>
+        <item name="android:editTextStyle">@style/App_EditTextStyle1</item>
+        <item name="android:textColorPrimary">@color/white</item>
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+    </style>
+
+    <style name="App_EditTextStyle1" parent="@android:style/Widget.EditText">
+        <item name="android:textColor">@android:color/black</item>
+    </style>
+
+
+    <style name="AlertDialogCustom1" parent="Theme.AppCompat.Light.Dialog.Alert">
+        <item name="android:textColor">@android:color/black</item>
+    </style>
+
 </resources>

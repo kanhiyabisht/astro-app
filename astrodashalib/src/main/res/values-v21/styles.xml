@@ -7,10 +7,6 @@
         <item name="android:statusBarColor">@android:color/transparent</item>
     </style>
 
-    <style name="AppTheme.ActionBar.Transparent" parent="AppTheme">
-        <item name="colorPrimary">@android:color/transparent</item>
-    </style>
-
     <style name="floating_action_button">
         <item name="android:layout_margin">10dp</item>
     </style>
