@@ -1,9 +1,6 @@
 package com.example.astrodashalib.view.modules.chat
 
-import android.content.ClipboardManager
-import android.content.Context
-import android.content.Intent
-import android.content.IntentFilter
+import android.content.*
 import android.os.AsyncTask
 import android.os.Build
 import android.os.Bundle
@@ -17,19 +14,16 @@ import com.example.astrodashalib.*
 import com.example.astrodashalib.chat.messageController.MessageControllerFactory
 import com.example.astrodashalib.chat.messageController.MessageControllerInterface
 import com.example.astrodashalib.data.GooglePaymentDetails
-import com.example.astrodashalib.data.models.ChatModel
-import com.example.astrodashalib.data.models.DialogListOption
-import com.example.astrodashalib.data.models.PaymentDetail
-import com.example.astrodashalib.data.models.UserModel
+import com.example.astrodashalib.data.models.*
 import com.example.astrodashalib.generic.GenericCallback
 import com.example.astrodashalib.generic.GenericQueryCallback
 import com.example.astrodashalib.helper.*
 import com.example.astrodashalib.localDB.DbConstants
 import com.example.astrodashalib.service.device.DeviceIdService
 import com.example.astrodashalib.service.faye.FayeIntentService
-import com.example.astrodashalib.service.faye.FayeService
 import com.example.astrodashalib.util.IabBroadcastReceiver
 import com.example.astrodashalib.util.IabHelper
+import com.example.astrodashalib.utils.BaseConfiguration.*
 import com.example.astrodashalib.view.adapter.ChatAdapter
 import com.example.astrodashalib.view.adapter.SimpleDialogAdapter
 import com.example.astrodashalib.view.widgets.dialog.MaterialDialog
@@ -37,6 +31,9 @@ import com.example.astrodashalib.view.widgets.dialog.ProgressDialogFragment
 import com.google.gson.Gson
 import com.orhanobut.dialogplus.DialogPlus
 import com.orhanobut.dialogplus.OnItemClickListener
+import com.paytm.pgsdk.PaytmOrder
+import com.paytm.pgsdk.PaytmPGService
+import com.paytm.pgsdk.PaytmPaymentTransactionCallback
 import kotlinx.android.synthetic.main.activity_chat_detail.*
 import kotlinx.android.synthetic.main.progress_layout.*
 import org.json.JSONObject
@@ -64,15 +61,15 @@ class ChatDetailActivity : AppCompatActivity(), ChatDetailContract.View, ChatAda
     var mPresenter: ChatDetailContract.Presenter? = null
     var chatModel: ChatModel? = null
     var copyChatModel: ChatModel? = null
-    private var dialog: MaterialDialog? = null
+    private var copySendDialog: MaterialDialog? = null
+    private var emailErrorDialog: MaterialDialog? = null
     var paymentList: ArrayList<DialogListOption> = arrayListOf(
-            DialogListOption("Google Wallet", R.drawable.google_wallet_icon)
+//            DialogListOption("Google Wallet", R.drawable.google_wallet_icon),
+            DialogListOption("Paytm", R.drawable.paytm_icon)
     )
 
-    var messageActionList: ArrayList<DialogListOption> = ArrayList()
-
     override fun onCreate(savedInstanceState: Bundle?) {
-        val style = intent.getIntExtra("style",0)
+        val style = intent.getIntExtra("style", 0)
         setTheme(style)
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_chat_detail)
@@ -84,10 +81,10 @@ class ChatDetailActivity : AppCompatActivity(), ChatDetailContract.View, ChatAda
         setDeviceId(deviceId, applicationContext)
         val userId = "5b27580d1d0700650c78c5fe";
         val crmUserId = "5acc4629840d00b20dee2ba0";
-        setUserId(userId,applicationContext)
-        setCrmUserId(crmUserId,applicationContext)
-        val userModel = UserModel(userId,"","Akash","","","","","","","","","",getDeviceId(applicationContext),"","",1);
-        setUserModel(userId,Gson().toJson(userModel),applicationContext);
+        setUserId(userId, applicationContext)
+        setCrmUserId(crmUserId, applicationContext)
+        val userModel = UserModel(userId, "", "Akash", "", "", "", "", "", "", "", "", "", getDeviceId(applicationContext), "", "", 1);
+        setUserModel(userId, Gson().toJson(userModel), applicationContext);
         loginUserId = getUserId(applicationContext)
         chatUserId = getCrmUserId(applicationContext)
 
@@ -119,14 +116,14 @@ class ChatDetailActivity : AppCompatActivity(), ChatDetailContract.View, ChatAda
                         coordinator_ll.hideKeyboard()
                     } else {
                         messageController?.sendChat(chat_edit_text.text.toString(), chatUserId, "", "")
-                        setFreeQuestionCount(1,applicationContext)
+                        setFreeQuestionCount(1, applicationContext)
                     }
 
                     chat_edit_text.setText("")
                 }
             }
 
-            if (getUserModel(getUserId(applicationContext),applicationContext) != null)
+            if (getUserModel(getUserId(applicationContext), applicationContext) != null)
                 onUserDataChange()
 
         } catch (e: Exception) {
@@ -157,11 +154,146 @@ class ChatDetailActivity : AppCompatActivity(), ChatDetailContract.View, ChatAda
 
     var paymentOnItemClickListener: OnItemClickListener = OnItemClickListener { dialog, item, view, position ->
         when (position) {
-            0 -> {
-                launchGoogleWalletFlow()
-            }
+//            0 -> launchGoogleWalletFlow()
+            0 -> launchPaytmFlow()
         }
         dialog.dismiss()
+    }
+
+    fun launchPaytmFlow() {
+        //TODO : Change the way email is getting accessed
+        if( getEmail(this).isEmpty()) {
+            showEmailErrorDialog()
+            return
+        }
+        getPaytmChecksum()
+    }
+
+    fun showEmailErrorDialog() {
+        emailErrorDialog = MaterialDialog(this@ChatDetailActivity).apply {
+            title("Error")
+            message1("Email is required for payment", object : MaterialDialog.ItemClickListener {
+                override fun onClick() {
+                    dismiss()
+                }
+            })
+            hideMessage2()
+            addPositiveButton("OK"){
+                dismiss()
+            }
+            show()
+        }
+    }
+
+    fun getPaytmChecksum() {
+        mPresenter?.getPaytmHash(PaytmHashRequestBody("0nf7" + System.currentTimeMillis(), getUserId(this), getPhoneNumber(this).replace("+91", ""), getIndTotalRemedyCost().toString(), getEmail(this)))
+    }
+
+    override fun onHashError() {
+        toast("Paytm can't be opened right now")
+    }
+
+    override fun startPaytmSDK(paytmHashRequestBody: PaytmHashRequestBody, paytmHashResponse: PaytmHashResponse) {
+        //TODO change before creating library
+//        PaytmPGService.getProductionService()
+        val Service =  PaytmPGService.getStagingService()
+        val paramMap = HashMap<String, String>()
+        paramMap.apply {
+            put(MID, PAYTM_MERCHANT_ID)
+            put(ORDER_ID, paytmHashRequestBody.orderId)
+            put(CUST_ID, paytmHashRequestBody.customerId)
+            put(INDUSTRY_TYPE_ID, PAYTM_INDUSTRY_TYPE_ID)
+            put(CHANNEL_ID, PAYTM_CHANNEL_ID)
+            put(TXN_AMOUNT, paytmHashRequestBody.txnAmt)
+            put(WEBSITE, PAYTM_WEBSITE)
+            put(CALLBACK_URL, PAYTM_CALLBACK_URL)
+            put(EMAIL, paytmHashRequestBody.email)
+            put(MOBILE_NO, paytmHashRequestBody.mobileNo)
+            put(CHECKSUMHASH, paytmHashResponse.mChecksumhash)
+        }
+
+        val Order = PaytmOrder(paramMap)
+        Service.initialize(Order, null)
+        Service.startPaymentTransaction(this, true, true,
+                object : PaytmPaymentTransactionCallback {
+
+                    override fun someUIErrorOccurred(inErrorMessage: String) {
+                        this@ChatDetailActivity.complain(inErrorMessage)
+                    }
+
+                    override fun onTransactionResponse(inResponse: Bundle) {
+                        try {
+                            Log.d("LOG", "Payment Transaction : " + inResponse)
+
+                            val paytmPaymentDetails = PaytmPaymentDetails(inResponse)
+                            when {
+                                paytmPaymentDetails.respCode == "01" -> mPresenter?.getPaytmOrderStatus(PaytmOrderStatusBody(paytmPaymentDetails.orderId), paytmPaymentDetails)
+
+                                paytmPaymentDetails.respMsg.isNotEmpty() -> {
+                                    this@ChatDetailActivity.complain(paytmPaymentDetails.respMsg)
+                                }
+
+                                else -> this@ChatDetailActivity.complain("Transaction error")
+                            }
+
+                        } catch (e: Exception) {
+                            e.printStackTrace()
+                        }
+
+                    }
+
+                    override fun networkNotAvailable() {
+                        this@ChatDetailActivity.complain("No internet connection")
+                    }
+
+                    override fun clientAuthenticationFailed(inErrorMessage: String) {
+                        // 1. Server error or downtime. // 2. Server unable to
+                        // generate checksum or checksum response is not in
+                        // proper format. // 3. Server failed to authenticate
+                        // that client. That is value of payt_STATUS is 2. //
+                        this@ChatDetailActivity.complain(inErrorMessage)
+                    }
+
+                    override fun onErrorLoadingWebPage(iniErrorCode: Int, inErrorMessage: String, inFailingUrl: String) {
+                        this@ChatDetailActivity.complain(inErrorMessage)
+
+                    }
+
+                    override fun onBackPressedCancelTransaction() {
+                        this@ChatDetailActivity.complain("Back Pressed")
+                    }
+
+                    override fun onTransactionCancel(inErrorMessage: String, inResponse: Bundle) {
+                        Log.d("LOG", "Payment Transaction Failed " + inErrorMessage)
+                        this@ChatDetailActivity.complain(inErrorMessage)
+                    }
+                })
+    }
+
+    override fun postPaytmPaymentDetails(paytmPaymentDetails: PaytmPaymentDetails) {
+        try {
+            val sdf = SimpleDateFormat("yyyy-MM-dd HH:mm:ss")
+            val date = sdf.parse(paytmPaymentDetails.txnDate)
+            val userId = getUserId(this)
+//            val mUserModel = Gson().fromJson(getUserModel(getLatestUserShown()), UserModel::class.java)
+            //TODO get name from somewhere
+//            val userName = mUserModel.userName
+            val userName = ""
+            val paymentDetail = PaymentDetail(getIndTotalRemedyCost().toString(), "", "", userName, Constant.PAYTM, "", userId,
+                    chat_edit_text.text.toString(), Gson().toJson(paytmPaymentDetails, PaytmPaymentDetails::class.java), date.time.toString())
+
+            mPresenter?.postPaymentDetails(paymentDetail, date.time,userId)
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
+    }
+
+    override fun onPaytmOrderStatusError(message: String) {
+        try {
+            complain(message)
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
     }
 
     fun setupIabHelper() {
@@ -240,11 +372,11 @@ class ChatDetailActivity : AppCompatActivity(), ChatDetailContract.View, ChatAda
                 Log.d(TAG, "Consumption successful. Provisioning.")
                 val googlePaymentDetails = GooglePaymentDetails(purchase)
                 val userId = getUserId(applicationContext)
-                val mUserModel = Gson().fromJson(getUserModel(getUserId(applicationContext),applicationContext), UserModel::class.java)
+                val mUserModel = Gson().fromJson(getUserModel(getUserId(applicationContext), applicationContext), UserModel::class.java)
                 val userName = mUserModel.userName
                 val paymentDetail = PaymentDetail(getIndTotalRemedyCost().toString(), "", "", userName, Constant.GOOGLE_WALLET, "", userId,
                         chat_edit_text.text.toString(), Gson().toJson(googlePaymentDetails, GooglePaymentDetails::class.java), googlePaymentDetails.mPurchaseTime.toString())
-                mPresenter?.postPaymentDetails(paymentDetail, googlePaymentDetails.mPurchaseTime,getUserId(applicationContext))
+                mPresenter?.postPaymentDetails(paymentDetail, googlePaymentDetails.mPurchaseTime, getUserId(applicationContext))
             } else {
                 complain("Error while consuming: " + result)
             }
@@ -299,10 +431,6 @@ class ChatDetailActivity : AppCompatActivity(), ChatDetailContract.View, ChatAda
         return (Constant.INDIA_REMEDY_PRICE).toDouble()
     }
 
-    override fun onHashError() {
-        toast("Paytm can't be opened right now")
-    }
-
     override fun onPaymentSuccess(paymentDetail: PaymentDetail, purchaseTimestamp: Long) {
         //send chat
         chatModel?.let { messageController?.sendChat(it) }
@@ -350,9 +478,9 @@ class ChatDetailActivity : AppCompatActivity(), ChatDetailContract.View, ChatAda
             messageController?.fetchChatsOfTwoUser(loginUserId, chatUserId, object : GenericQueryCallback<ChatModel> {
 
                 override fun callback(error: JSONObject, list: ArrayList<ChatModel>) {
-                    Log.e("chatList",list.size.toString())
+                    Log.e("chatList", list.size.toString())
                     if (list.isNotEmpty()) {
-                        setFreeQuestionCount(1,applicationContext)
+                        setFreeQuestionCount(1, applicationContext)
                     }
                     executeInsertDatesTask(list, isScreenOpenFirstTime, true)
                 }
@@ -479,20 +607,16 @@ class ChatDetailActivity : AppCompatActivity(), ChatDetailContract.View, ChatAda
 
     override fun onItemClicked(view: View, position: Int) {
         copyChatModel = chatModelList[position]
-        messageActionList = arrayListOf(DialogListOption("Copy", null))
-        if (copyChatModel?.chatStatus == DbConstants.STATUS_NOT_PAID)
-            messageActionList.add(DialogListOption("Resend", null))
-        showCopySendDialog2(copyChatModel)
+        showCopySendDialog(copyChatModel)
     }
 
-    fun showCopySendDialog2(chatModel: ChatModel?) {
-        dialog = MaterialDialog(this@ChatDetailActivity).apply {
+    fun showCopySendDialog(chatModel: ChatModel?) {
+        copySendDialog = MaterialDialog(this@ChatDetailActivity).apply {
             title("Message Options")
             message1("Copy", object : MaterialDialog.ItemClickListener {
                 override fun onClick() {
                     val clipboardManager = getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
-                    val clipData = android.content.ClipData.newPlainText("text label", chatModel?.value ?: "")
-                    clipboardManager.primaryClip = clipData
+                    clipboardManager.primaryClip = ClipData.newPlainText("text label", chatModel?.value?: "")
                 }
             })
             if (chatModel?.chatStatus == DbConstants.STATUS_NOT_PAID)
@@ -502,7 +626,7 @@ class ChatDetailActivity : AppCompatActivity(), ChatDetailContract.View, ChatAda
                             showPaymentDialog()
                             this@ChatDetailActivity.chatModel = copyChatModel
                             coordinator_ll.hideKeyboard()
-                        }catch (e :Exception){
+                        } catch (e: Exception) {
 
                         }
                     }
@@ -511,35 +635,6 @@ class ChatDetailActivity : AppCompatActivity(), ChatDetailContract.View, ChatAda
             hideBtn()
             show()
         }
-    }
-
-
-    fun showCopySendDialog() {
-        val dialog = DialogPlus.newDialog(this)
-                .setHeader(R.layout.dialog_header_1)
-                .setAdapter(SimpleDialogAdapter(this, messageActionList))
-                .setOnItemClickListener(OnItemClickListener)
-                .setGravity(Gravity.CENTER)
-                .setExpanded(false)
-                .create()
-        dialog.show()
-
-    }
-
-    var OnItemClickListener: OnItemClickListener = OnItemClickListener { dialog, item, view, position ->
-        when (position) {
-            0 -> {
-                val clipboardManager = getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
-                val clipData = android.content.ClipData.newPlainText("text label", copyChatModel?.value ?: "")
-                clipboardManager.primaryClip = clipData
-            }
-            1 -> {
-                showPaymentDialog()
-                chatModel = copyChatModel
-                coordinator_ll.hideKeyboard()
-            }
-        }
-        dialog.dismiss()
     }
 
     fun setChatDetailRecyclerView(finalChatArrayList: ArrayList<ChatModel>, isFirstTime: Boolean) {
@@ -676,8 +771,8 @@ class ChatDetailActivity : AppCompatActivity(), ChatDetailContract.View, ChatAda
             DeviceIdService.startService(this)
     }
 
-    override fun setCrmId(id:String){
-        setCrmUserId(id,applicationContext)
+    override fun setCrmId(id: String) {
+        setCrmUserId(id, applicationContext)
     }
 
 
@@ -687,8 +782,8 @@ class ChatDetailActivity : AppCompatActivity(), ChatDetailContract.View, ChatAda
 
 
     override fun onUserUpdateSuccess(userModel: UserModel) {
-        setEmail(userModel.email,applicationContext)
-        setUserModel(getUserId(applicationContext), Gson().toJson(userModel),applicationContext)
+        setEmail(userModel.email, applicationContext)
+        setUserModel(getUserId(applicationContext), Gson().toJson(userModel), applicationContext)
     }
 
     override fun onUserUpdateError() {
@@ -697,7 +792,7 @@ class ChatDetailActivity : AppCompatActivity(), ChatDetailContract.View, ChatAda
 
     override fun onDestroy() {
         try {
-            dialog?.dismiss()
+            copySendDialog?.dismiss()
             mPresenter?.detachView()
             mInsertDates?.let {
                 it.chatDetailActivity = null
@@ -714,6 +809,40 @@ class ChatDetailActivity : AppCompatActivity(), ChatDetailContract.View, ChatAda
 
 
     companion object {
+
+        @JvmField
+        val MID = "MID"
+
+        @JvmField
+        val ORDER_ID = "ORDER_ID"
+
+        @JvmField
+        val CUST_ID = "CUST_ID"
+
+        @JvmField
+        val INDUSTRY_TYPE_ID = "INDUSTRY_TYPE_ID"
+
+        @JvmField
+        val CHANNEL_ID = "CHANNEL_ID"
+
+        @JvmField
+        val TXN_AMOUNT = "TXN_AMOUNT"
+
+        @JvmField
+        val WEBSITE = "WEBSITE"
+
+        @JvmField
+        val CALLBACK_URL = "CALLBACK_URL"
+
+        @JvmField
+        val CHECKSUMHASH = "CHECKSUMHASH"
+
+        @JvmField
+        val EMAIL = "EMAIL"
+
+        @JvmField
+        val MOBILE_NO = "MOBILE_NO"
+
 
 
         @JvmField
@@ -745,9 +874,9 @@ class ChatDetailActivity : AppCompatActivity(), ChatDetailContract.View, ChatAda
 
 
         @JvmStatic
-        fun createIntent(context: Context?,style: Int): Intent {
+        fun createIntent(context: Context?, style: Int): Intent {
             val intent = Intent(context, ChatDetailActivity::class.java)
-            intent.putExtra("style",style)
+            intent.putExtra("style", style)
             return intent
         }
 

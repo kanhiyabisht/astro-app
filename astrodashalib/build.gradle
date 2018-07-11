@@ -46,6 +46,8 @@ dependencies {
     }
     implementation 'com.android.support.constraint:constraint-layout:1.0.2'
 
+    compile files('libs/PGSDK_V2.1.jar')
+
     compile "com.android.support:appcompat-v7:${supportVersion}"
     compile "com.android.support:support-core-ui:${supportVersion}"
     compile "com.android.support:customtabs:${supportVersion}"

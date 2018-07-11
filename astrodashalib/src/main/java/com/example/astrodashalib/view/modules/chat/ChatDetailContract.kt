@@ -15,6 +15,9 @@ interface ChatDetailContract {
         fun onHashError()
         fun onCrmUserError()
         fun setCrmId(id:String)
+        fun postPaytmPaymentDetails(paytmPaymentDetails: PaytmPaymentDetails)
+        fun onPaytmOrderStatusError(message: String)
+        fun startPaytmSDK(paytmHashRequestBody: PaytmHashRequestBody, paytmHashResponse: PaytmHashResponse)
         fun onPaymentSuccess(paymentDetail: PaymentDetail, purchaseTimestamp: Long)
         fun onPaymentError(purchaseTimestamp: Long)
         fun onUserUpdateSuccess(userModel: UserModel)
@@ -22,6 +25,8 @@ interface ChatDetailContract {
     }
 
     interface Presenter : BasePresenter<View>{
+        fun getPaytmHash(paytmHashRequestBody: PaytmHashRequestBody)
+        fun getPaytmOrderStatus(paytmOrderStatusBody: PaytmOrderStatusBody, paytmPaymentDetails: PaytmPaymentDetails)
         fun getCrmUserId(userId:String)
         fun postPaymentDetails(paymentDetail: PaymentDetail, purchaseTimestamp: Long,userId:String)
     }

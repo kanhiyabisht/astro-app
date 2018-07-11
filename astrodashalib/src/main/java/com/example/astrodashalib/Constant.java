@@ -3,6 +3,7 @@ package com.example.astrodashalib;
 import com.example.astrodashalib.data.models.Country;
 import com.example.astrodashalib.utils.BaseConfiguration;
 
+
 import java.util.HashMap;
 
 /**
@@ -54,6 +55,7 @@ public class Constant {
 
     public static String TAG_PREDICTION_DETAIL_FRAGMENT = "Prediction_Detail_Fragment";
     public static String TAG_PURCHASE_REMEDY_FRAGMENT = "Purchase_Remedy_Fragment";
+
 
     static {
         upayIdHashMap.put(1, "upay_1");
