@@ -1,6 +1,7 @@
 package com.example.astrodashalib.view.modules.chat
 
 import com.example.astrodashalib.data.models.*
+import com.example.astrodashalib.model.CurrentAntardashaFalRequestBody
 import com.example.astrodashalib.view.base.BasePresenter
 import com.example.astrodashalib.view.base.BaseView
 
@@ -29,5 +30,6 @@ interface ChatDetailContract {
         fun getPaytmOrderStatus(paytmOrderStatusBody: PaytmOrderStatusBody, paytmPaymentDetails: PaytmPaymentDetails)
         fun getCrmUserId(userId:String)
         fun postPaymentDetails(paymentDetail: PaymentDetail, purchaseTimestamp: Long,userId:String)
+        fun getCurrentAntardashaFalText(currentAntardashaFalRequestBody: CurrentAntardashaFalRequestBody)
     }
 }

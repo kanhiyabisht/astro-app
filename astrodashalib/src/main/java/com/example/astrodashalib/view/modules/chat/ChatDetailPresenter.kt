@@ -6,6 +6,7 @@ import com.example.astrodashalib.data.models.PaymentDetail
 import com.example.astrodashalib.data.models.PaytmHashRequestBody
 import com.example.astrodashalib.data.models.PaytmOrderStatusBody
 import com.example.astrodashalib.data.models.PaytmPaymentDetails
+import com.example.astrodashalib.model.CurrentAntardashaFalRequestBody
 import com.example.astrodashalib.provider.rest.RestProvider
 import rx.android.schedulers.AndroidSchedulers
 import rx.schedulers.Schedulers
@@ -27,6 +28,16 @@ class ChatDetailPresenter : ChatDetailContract.Presenter {
     override fun detachView() {
         mView = null
         mCompositeSubscription.clear()
+    }
+
+    override fun getCurrentAntardashaFalText(currentAntardashaFalRequestBody: CurrentAntardashaFalRequestBody) {
+
+
+        mView?.showLoader()
+        /*mCompositeSubscription.add(RestProvider.getDashaService().getCurrentAntardashaFalText(Constant.KEY_VALUE, userId, userId)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe())*/
     }
 
     override fun getCrmUserId(userId:String) {

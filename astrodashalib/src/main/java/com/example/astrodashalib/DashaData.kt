@@ -3,7 +3,7 @@ package com.example.astrodashalib
 import com.example.astrodashalib.interfaces.DashaCallback
 import com.example.astrodashalib.model.*
 import com.example.astrodashalib.model.response.*
-import com.example.astrodashalib.service.RestProvider
+import com.example.astrodashalib.provider.rest.RestProvider
 import com.example.astrodashalib.utils.Utils
 import rx.Subscriber
 import rx.android.schedulers.AndroidSchedulers

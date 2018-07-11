@@ -4,6 +4,7 @@ import android.support.annotation.NonNull;
 
 import com.example.astrodashalib.BuildConfig;
 import com.example.astrodashalib.data.service.BirthDetailService;
+import com.example.astrodashalib.data.service.DashaService;
 import com.example.astrodashalib.data.service.DownloadChatService;
 import com.example.astrodashalib.data.service.FayeTokenService;
 import com.example.astrodashalib.data.service.PaymentService;
@@ -97,6 +98,11 @@ public class RestProvider {
     @NonNull
     public static PaymentService getPaymentService() {
         return provideRxRetrofit().create(PaymentService.class);
+    }
+
+    @NonNull
+    public static DashaService getDashaService() {
+        return provideRxRetrofit().create(DashaService.class);
     }
 
 

@@ -1,4 +1,4 @@
-package com.example.astrodashalib.service
+package com.example.astrodashalib.data.service
 
 import com.example.astrodashalib.model.*
 import com.example.astrodashalib.model.response.*

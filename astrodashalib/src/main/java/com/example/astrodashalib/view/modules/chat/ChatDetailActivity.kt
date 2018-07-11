@@ -19,6 +19,7 @@ import com.example.astrodashalib.generic.GenericCallback
 import com.example.astrodashalib.generic.GenericQueryCallback
 import com.example.astrodashalib.helper.*
 import com.example.astrodashalib.localDB.DbConstants
+import com.example.astrodashalib.model.CurrentAntardashaFalRequestBody
 import com.example.astrodashalib.service.device.DeviceIdService
 import com.example.astrodashalib.service.faye.FayeIntentService
 import com.example.astrodashalib.util.IabBroadcastReceiver
@@ -52,8 +53,7 @@ class ChatDetailActivity : AppCompatActivity(), ChatDetailContract.View, ChatAda
     var chatAdapter: ChatAdapter? = null
     var broadcastRecieverHashMap: HashMap<String, ChatBroadcastInterface> = HashMap()
     var messageController: MessageControllerInterface? = null
-    var currentListItemIndex: Int = 0
-    private val currentActionMode: ActionMode? = null
+    var currentAntardashaFalRequestBody: CurrentAntardashaFalRequestBody? = null
     var mInsertDates: InsertDates? = null
     var recentDateTxt = ""
     var reciever: ChatReciever? = null
@@ -69,22 +69,16 @@ class ChatDetailActivity : AppCompatActivity(), ChatDetailContract.View, ChatAda
     )
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        val style = intent.getIntExtra("style", 0)
+        val style = intent.getIntExtra(STYLE, 0)
         setTheme(style)
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_chat_detail)
         chatModelList = ArrayList()
         mPresenter = ChatDetailPresenter()
         mPresenter?.attachView(this)
-        setupIabHelper()
-        val deviceId = "4d8e6a8bc968f22cb850043d096ca250250932f8f93cfbfbb67433474da72f89"
-        setDeviceId(deviceId, applicationContext)
-        val userId = "5b27580d1d0700650c78c5fe";
-        val crmUserId = "5acc4629840d00b20dee2ba0";
-        setUserId(userId, applicationContext)
-        setCrmUserId(crmUserId, applicationContext)
-        val userModel = UserModel(userId, "", "Akash", "", "", "", "", "", "", "", "", "", getDeviceId(applicationContext), "", "", 1);
-        setUserModel(userId, Gson().toJson(userModel), applicationContext);
+//        setupIabHelper()
+        currentAntardashaFalRequestBody = intent.getSerializableExtra(ANTAR_DASHA_REQUEST_BODY) as CurrentAntardashaFalRequestBody?
+        initaliseChatUsersData()
         loginUserId = getUserId(applicationContext)
         chatUserId = getCrmUserId(applicationContext)
 
@@ -110,7 +104,7 @@ class ChatDetailActivity : AppCompatActivity(), ChatDetailContract.View, ChatAda
                 if (loginUserId.equals("-1") || chatUserId.isNullOrEmpty()) {
                     toast("Fill birth details")
                 } else if (chat_edit_text.text.toString().trim().isNotEmpty()) {
-                    if (getFreeQuestionCount(applicationContext) != 1) {
+                    if (getFreeQuestionCount(applicationContext) >= 1) {
                         showPaymentDialog()
                         chatModel = messageController?.saveChat(chat_edit_text.text.toString(), chatUserId, "", "")
                         coordinator_ll.hideKeyboard()
@@ -129,6 +123,22 @@ class ChatDetailActivity : AppCompatActivity(), ChatDetailContract.View, ChatAda
         } catch (e: Exception) {
             e.printStackTrace()
         }
+    }
+
+    private fun initaliseChatUsersData() {
+        val userName = intent.getStringExtra(NAME) ?: ""
+        val email = intent.getStringExtra(EMAIL) ?: ""
+        val phone = intent.getStringExtra(MOBILE_NO) ?: ""
+        val deviceId = "4d8e6a8bc968f22cb850043d096ca250250932f8f93cfbfbb67433474da72f89"
+        val userId = "5b27580d1d0700650c78c5fe";
+        val crmUserId = "5acc4629840d00b20dee2ba0";
+        val userModel = UserModel(userId, "", userName, "", "", "", "", "", "", "", "", "", getDeviceId(applicationContext), phone, email, 1);
+        setDeviceId(deviceId, applicationContext)
+        setEmail(email, applicationContext)
+        setPhoneNumber(phone, applicationContext)
+        setUserId(userId, applicationContext)
+        setCrmUserId(crmUserId, applicationContext)
+        setUserModel(userId, Gson().toJson(userModel), applicationContext);
     }
 
     fun onUserDataChange() {
@@ -162,7 +172,7 @@ class ChatDetailActivity : AppCompatActivity(), ChatDetailContract.View, ChatAda
 
     fun launchPaytmFlow() {
         //TODO : Change the way email is getting accessed
-        if( getEmail(this).isEmpty()) {
+        if (getEmail(this).isEmpty()) {
             showEmailErrorDialog()
             return
         }
@@ -178,7 +188,7 @@ class ChatDetailActivity : AppCompatActivity(), ChatDetailContract.View, ChatAda
                 }
             })
             hideMessage2()
-            addPositiveButton("OK"){
+            addPositiveButton("OK") {
                 dismiss()
             }
             show()
@@ -196,7 +206,7 @@ class ChatDetailActivity : AppCompatActivity(), ChatDetailContract.View, ChatAda
     override fun startPaytmSDK(paytmHashRequestBody: PaytmHashRequestBody, paytmHashResponse: PaytmHashResponse) {
         //TODO change before creating library
 //        PaytmPGService.getProductionService()
-        val Service =  PaytmPGService.getStagingService()
+        val Service = PaytmPGService.getStagingService()
         val paramMap = HashMap<String, String>()
         paramMap.apply {
             put(MID, PAYTM_MERCHANT_ID)
@@ -282,7 +292,7 @@ class ChatDetailActivity : AppCompatActivity(), ChatDetailContract.View, ChatAda
             val paymentDetail = PaymentDetail(getIndTotalRemedyCost().toString(), "", "", userName, Constant.PAYTM, "", userId,
                     chat_edit_text.text.toString(), Gson().toJson(paytmPaymentDetails, PaytmPaymentDetails::class.java), date.time.toString())
 
-            mPresenter?.postPaymentDetails(paymentDetail, date.time,userId)
+            mPresenter?.postPaymentDetails(paymentDetail, date.time, userId)
         } catch (e: Exception) {
             e.printStackTrace()
         }
@@ -616,7 +626,8 @@ class ChatDetailActivity : AppCompatActivity(), ChatDetailContract.View, ChatAda
             message1("Copy", object : MaterialDialog.ItemClickListener {
                 override fun onClick() {
                     val clipboardManager = getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
-                    clipboardManager.primaryClip = ClipData.newPlainText("text label", chatModel?.value?: "")
+                    clipboardManager.primaryClip = ClipData.newPlainText("text label", chatModel?.value
+                            ?: "")
                 }
             })
             if (chatModel?.chatStatus == DbConstants.STATUS_NOT_PAID)
@@ -843,8 +854,6 @@ class ChatDetailActivity : AppCompatActivity(), ChatDetailContract.View, ChatAda
         @JvmField
         val MOBILE_NO = "MOBILE_NO"
 
-
-
         @JvmField
         var chatUserId: String? = null
 
@@ -872,12 +881,25 @@ class ChatDetailActivity : AppCompatActivity(), ChatDetailContract.View, ChatAda
         @JvmField
         val RC_REQUEST = 10001
 
+        @JvmField
+        val STYLE = "style"
+
+        @JvmField
+        val NAME = "name"
+
+        @JvmField
+        val ANTAR_DASHA_REQUEST_BODY = "antarDashaRequestBody"
+
 
         @JvmStatic
-        fun createIntent(context: Context?, style: Int): Intent {
-            val intent = Intent(context, ChatDetailActivity::class.java)
-            intent.putExtra("style", style)
-            return intent
+        fun createIntent(context: Context?, style: Int, email: String, phoneNumber: String, userName: String, currentAntardashaFalRequestBody: CurrentAntardashaFalRequestBody): Intent {
+            return Intent(context, ChatDetailActivity::class.java).apply {
+                this.putExtra(STYLE, style)
+                this.putExtra(EMAIL, email)
+                this.putExtra(MOBILE_NO, phoneNumber)
+                this.putExtra(NAME, userName)
+                this.putExtra(ANTAR_DASHA_REQUEST_BODY, currentAntardashaFalRequestBody)
+            }
         }
 
         @JvmStatic
