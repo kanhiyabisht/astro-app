@@ -47,9 +47,6 @@ class ChatDetailActivity : AppCompatActivity(), ChatDetailContract.View, ChatAda
 
     var chatModelList: ArrayList<ChatModel> = ArrayList()
     var loginUserId: String? = null
-    var mHelper: IabHelper? = null
-    var mBroadcastReceiver: IabBroadcastReceiver? = null
-    var isSetupFinished = false
     var chatAdapter: ChatAdapter? = null
     var broadcastRecieverHashMap: HashMap<String, ChatBroadcastInterface> = HashMap()
     var messageController: MessageControllerInterface? = null
@@ -64,7 +61,6 @@ class ChatDetailActivity : AppCompatActivity(), ChatDetailContract.View, ChatAda
     private var copySendDialog: MaterialDialog? = null
     private var emailErrorDialog: MaterialDialog? = null
     var paymentList: ArrayList<DialogListOption> = arrayListOf(
-//            DialogListOption("Google Wallet", R.drawable.google_wallet_icon),
             DialogListOption("Paytm", R.drawable.paytm_icon)
     )
 
@@ -76,7 +72,6 @@ class ChatDetailActivity : AppCompatActivity(), ChatDetailContract.View, ChatAda
         chatModelList = ArrayList()
         mPresenter = ChatDetailPresenter()
         mPresenter?.attachView(this)
-//        setupIabHelper()
         currentAntardashaFalRequestBody = intent.getSerializableExtra(ANTAR_DASHA_REQUEST_BODY) as CurrentAntardashaFalRequestBody?
         initaliseChatUsersData()
         loginUserId = getUserId(applicationContext)
@@ -164,7 +159,6 @@ class ChatDetailActivity : AppCompatActivity(), ChatDetailContract.View, ChatAda
 
     var paymentOnItemClickListener: OnItemClickListener = OnItemClickListener { dialog, item, view, position ->
         when (position) {
-//            0 -> launchGoogleWalletFlow()
             0 -> launchPaytmFlow()
         }
         dialog.dismiss()
@@ -301,137 +295,6 @@ class ChatDetailActivity : AppCompatActivity(), ChatDetailContract.View, ChatAda
     override fun onPaytmOrderStatusError(message: String) {
         try {
             complain(message)
-        } catch (e: Exception) {
-            e.printStackTrace()
-        }
-    }
-
-    fun setupIabHelper() {
-        if (AppHelper.isGooglePlayServicesAvailable(this)) {
-            val base64EncodedPublicKey = "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEArCve41bRnl/ElsJZBTlsNO2PP7DGY7u+BBrcKkL+VLNaNV7MH1mOnQDX5bvKI7hwPUt26OZP3/v5PZUXKA2NY8FP9nvydaIWO0XhVaxCxX5DWcw3nTD+b7/F3U14y7E6LJ1JkXAkoaYlYQ2ictlG7XQkVed6epMhuqXgQBR5ebFs3KAQ4KRarCRMz5rxMv+LKWXYlbAQdYKOGBkeKfEPwtTVFnQoMo5cpSPuHLK8NNpUfOAwv9Z1Fsyr9mvP1CTJ7bq9JHXpzBSyFMbvEXUNR8SeHDYFImLtLLfozjNw6PpN15QaBlL7OIHjmcOKyRLuaCMcAfhR5R6ZkZjspdZMIwIDAQAB"
-            mHelper = IabHelper(this, base64EncodedPublicKey)
-            mHelper?.let {
-                it.enableDebugLogging(false)
-                it.startSetup(mOnIabSetupFinishedListener)
-            }
-        } else
-            complain("Google play service not available")
-    }
-
-    var mOnIabSetupFinishedListener: IabHelper.OnIabSetupFinishedListener = IabHelper.OnIabSetupFinishedListener { result ->
-        if (!result.isSuccess) {
-            isSetupFinished = false
-            complain("Problem setting up in-app billing: " + result)
-            return@OnIabSetupFinishedListener
-        }
-        isSetupFinished = true
-
-        if (mHelper == null) return@OnIabSetupFinishedListener
-
-        mBroadcastReceiver = IabBroadcastReceiver(mIabBroadcastListener)
-        registerReceiver(mBroadcastReceiver, IntentFilter(IabBroadcastReceiver.ACTION))
-        Log.d(TAG, "Setup successful. Querying inventory.")
-        try {
-            mHelper?.queryInventoryAsync(mGotInventoryListener)
-        } catch (e: IabHelper.IabAsyncInProgressException) {
-            complain("Error querying inventory. Another async operation in progress.")
-        }
-    }
-
-    var mIabBroadcastListener: IabBroadcastReceiver.IabBroadcastListener = IabBroadcastReceiver.IabBroadcastListener { }
-
-    var mGotInventoryListener: IabHelper.QueryInventoryFinishedListener = IabHelper.QueryInventoryFinishedListener { result, inventory ->
-        try {
-            Log.d(TAG, "Query inventory finished.")
-
-            if (mHelper == null) return@QueryInventoryFinishedListener
-
-            if (result.isFailure) {
-                complain("Failed to query inventory: " + result)
-                return@QueryInventoryFinishedListener
-            }
-
-            Log.d(TAG, "Query inventory was successful.")
-            Constant.upayIdHashMap.values.forEach { value ->
-                val gasPurchase = inventory.getPurchase(value)
-                gasPurchase?.let {
-                    try {
-                        mHelper?.consumeAsync(it, mConsumeFinishedListener)
-                    } catch (e: IabHelper.IabAsyncInProgressException) {
-                        complain("Error consuming gas. Another async operation in progress.")
-                    }
-
-                    return@QueryInventoryFinishedListener
-                }
-            }
-
-            Log.d(TAG, "Initial inventory query finished; enabling main UI.")
-        } catch (e: Exception) {
-            e.printStackTrace()
-        }
-    }
-
-
-    var mConsumeFinishedListener: IabHelper.OnConsumeFinishedListener = IabHelper.OnConsumeFinishedListener { purchase, result ->
-        try {
-            Log.d(TAG, "Consumption finished. Purchase: $purchase, result: $result")
-
-            if (mHelper == null) return@OnConsumeFinishedListener
-
-            if (result.isSuccess) {
-                Log.d(TAG, "Consumption successful. Provisioning.")
-                val googlePaymentDetails = GooglePaymentDetails(purchase)
-                val userId = getUserId(applicationContext)
-                val mUserModel = Gson().fromJson(getUserModel(getUserId(applicationContext), applicationContext), UserModel::class.java)
-                val userName = mUserModel.userName
-                val paymentDetail = PaymentDetail(getIndTotalRemedyCost().toString(), "", "", userName, Constant.GOOGLE_WALLET, "", userId,
-                        chat_edit_text.text.toString(), Gson().toJson(googlePaymentDetails, GooglePaymentDetails::class.java), googlePaymentDetails.mPurchaseTime.toString())
-                mPresenter?.postPaymentDetails(paymentDetail, googlePaymentDetails.mPurchaseTime, getUserId(applicationContext))
-            } else {
-                complain("Error while consuming: " + result)
-            }
-
-            Log.d(TAG, "End consumption flow.")
-
-        } catch (e: Exception) {
-            e.printStackTrace()
-        }
-    }
-
-    fun launchGoogleWalletFlow() {
-        val payload = ""
-        try {
-            if (isSetupFinished)
-                mHelper?.launchPurchaseFlow(this, Constant.upayIdHashMap[1], RC_REQUEST, mPurchaseFinishedListener, payload)
-            else
-                complain("In app billing not setup")
-        } catch (e: IabHelper.IabAsyncInProgressException) {
-            complain("Error launching purchase flow. Another async operation in progress.")
-        } catch (e: Exception) {
-            complain("Error in getting product from play store")
-        }
-    }
-
-    var mPurchaseFinishedListener: IabHelper.OnIabPurchaseFinishedListener = IabHelper.OnIabPurchaseFinishedListener { result, purchase ->
-        try {
-            Log.d(TAG, "Purchase finished: $result, purchase: $purchase")
-
-            if (mHelper == null) return@OnIabPurchaseFinishedListener
-
-            if (result.isFailure) {
-                complain("Error purchasing: " + result)
-                return@OnIabPurchaseFinishedListener
-            }
-
-
-            if (purchase.sku == Constant.upayIdHashMap[1]) {
-                try {
-                    mHelper?.consumeAsync(purchase, mConsumeFinishedListener)
-                } catch (e: IabHelper.IabAsyncInProgressException) {
-                    complain("Error consuming gas. Another async operation in progress.")
-                    return@OnIabPurchaseFinishedListener
-                }
-            }
         } catch (e: Exception) {
             e.printStackTrace()
         }
@@ -786,10 +649,6 @@ class ChatDetailActivity : AppCompatActivity(), ChatDetailContract.View, ChatAda
         setCrmUserId(id, applicationContext)
     }
 
-
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent) {
-        mHelper?.handleActivityResult(requestCode, resultCode, data)
-    }
 
 
     override fun onUserUpdateSuccess(userModel: UserModel) {
