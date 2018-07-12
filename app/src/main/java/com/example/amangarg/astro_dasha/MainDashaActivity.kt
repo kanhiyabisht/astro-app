@@ -1,13 +1,14 @@
 package com.example.amangarg.astro_dasha
 
 import android.content.Intent
-import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
+import android.support.v7.app.AppCompatActivity
 import android.view.View
 import com.example.astrodashalib.DashaData
 import com.example.astrodashalib.interfaces.DashaCallback
 import com.example.astrodashalib.model.*
 import com.example.astrodashalib.model.response.*
+import com.example.astrodashalib.view.modules.chat.ChatDetailActivity
 import kotlinx.android.synthetic.main.activity_main_dasha.*
 import kotlinx.android.synthetic.main.progress_layout.*
 
@@ -32,7 +33,13 @@ class MainDashaActivity : AppCompatActivity() {
         var paramForPerskvValue: String = paramForPerskvHashMap.get("paramForPerskv") ?: ""
         var paramForProdValue: String = paramForProdHashMap.get("paramForProd") ?: ""
 
-        horoscope_cv.setOnClickListener {
+        chatBtn.setOnClickListener {
+            val style = R.style.AppTheme1
+            val currentAntardashaFalRequestBody = CurrentAntardashaFalRequestBody(mainMahadashaListValue,onlineResultValue,paramForPerskvValue,paramForProdValue,kpChartValue,cuspHouseValue)
+            startActivity(ChatDetailActivity.createIntent(this@MainDashaActivity,style,"him.phogat123@gmail.com","9212200005","Himanshu",currentAntardashaFalRequestBody))
+        }
+
+        horoscopeBtn.setOnClickListener {
             nsv.visibility = View.GONE
             progress_view_ll.visibility = View.VISIBLE
 
@@ -55,7 +62,7 @@ class MainDashaActivity : AppCompatActivity() {
 
         }
 
-        current_mahadasha_cv.setOnClickListener {
+        currentMahadashaBtn.setOnClickListener {
             nsv.visibility = View.GONE
             progress_view_ll.visibility = View.VISIBLE
             dashaData.getCurrentMahadashaFalAsync("",CurrentMahadashaFalRequestBody(mainMahadashaListValue, onlineResultValue, paramForPerskvValue, paramForProdValue), object : DashaCallback<CurrentMahadashaFalResponse> {
@@ -76,10 +83,10 @@ class MainDashaActivity : AppCompatActivity() {
             })
         }
 
-        current_antardasha_cv.setOnClickListener {
+        currentAntarDashaBtn.setOnClickListener {
             nsv.visibility = View.GONE
             progress_view_ll.visibility = View.VISIBLE
-            dashaData.getCurrentAntardashaFalAsync("",CurrentAntardashaFalRequestBody(mainMahadashaListValue, onlineResultValue, paramForPerskvValue, paramForProdValue), object : DashaCallback<CurrentAntardashaFalResponse> {
+            dashaData.getCurrentAntardashaFalAsync("",CurrentAntardashaFalRequestBody(mainMahadashaListValue, onlineResultValue, paramForPerskvValue, paramForProdValue,kpChartValue,cuspHouseValue), object : DashaCallback<CurrentAntardashaFalResponse> {
                 override fun onSuccess(data: CurrentAntardashaFalResponse) {
                     dashaResponse = data.antardashaText
                     intent.putExtra("dashaResp", dashaResponse)
@@ -97,7 +104,7 @@ class MainDashaActivity : AppCompatActivity() {
             })
         }
 
-        yog_yuti_cv.setOnClickListener {
+        yogYutiBtn.setOnClickListener {
             nsv.visibility = View.GONE
             progress_view_ll.visibility = View.VISIBLE
             dashaData.getYogYutiResponseAsync("",YogYutiRequestBody(kpChartValue, cuspHouseCuspValue, onlineResultValue, paramForPerskvValue), object : DashaCallback<YogYutiResponse> {
@@ -118,7 +125,7 @@ class MainDashaActivity : AppCompatActivity() {
             })
         }
 
-        health_cv.setOnClickListener {
+        healthBtn.setOnClickListener {
             nsv.visibility = View.GONE
             progress_view_ll.visibility = View.VISIBLE
             dashaData.getHealthResponseAsync("",PredictionRequestBody(kpChartValue, cuspHouseValue, onlineResultValue, paramForPerskvValue, paramForProdValue), object : DashaCallback<HealthResponse> {
@@ -139,7 +146,7 @@ class MainDashaActivity : AppCompatActivity() {
             })
         }
 
-        married_life_cv.setOnClickListener {
+        marriedLifeBtn.setOnClickListener {
             nsv.visibility = View.GONE
             progress_view_ll.visibility = View.VISIBLE
             dashaData.getMarriedLifeResponseAsync("",PredictionRequestBody(kpChartValue, cuspHouseValue, onlineResultValue, paramForPerskvValue, paramForProdValue), object : DashaCallback<MarriedLifeResponse> {
@@ -160,7 +167,7 @@ class MainDashaActivity : AppCompatActivity() {
             })
         }
 
-        occupation_cv.setOnClickListener {
+        occupationBtn.setOnClickListener {
             nsv.visibility = View.GONE
             progress_view_ll.visibility = View.VISIBLE
             dashaData.getOccupationResponseAsync("",PredictionRequestBody(kpChartValue, cuspHouseValue, onlineResultValue, paramForPerskvValue, paramForProdValue), object : DashaCallback<OccupationResponse> {
@@ -180,7 +187,7 @@ class MainDashaActivity : AppCompatActivity() {
 
             })
         }
-        parents_cv.setOnClickListener {
+        parentsBtn.setOnClickListener {
             nsv.visibility = View.GONE
             progress_view_ll.visibility = View.VISIBLE
             dashaData.getParentsResponseAsync("",PredictionRequestBody(kpChartValue, cuspHouseValue, onlineResultValue, paramForPerskvValue, paramForProdValue), object : DashaCallback<ParentsResponse> {
@@ -201,7 +208,7 @@ class MainDashaActivity : AppCompatActivity() {
             })
         }
 
-        children_cv.setOnClickListener {
+        childrenBtn.setOnClickListener {
             nsv.visibility = View.GONE
             progress_view_ll.visibility = View.VISIBLE
             dashaData.getChildrenResponseAsync("",PredictionRequestBody(kpChartValue, cuspHouseValue, onlineResultValue, paramForPerskvValue, paramForProdValue), object : DashaCallback<ChildrenResponse> {

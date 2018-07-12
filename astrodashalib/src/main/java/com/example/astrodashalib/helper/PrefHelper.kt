@@ -38,7 +38,7 @@ fun getString(key: String,context: Context): String? {
     return getDefaultSharedPreferences(context).getString(key, null)
 }
 
-fun getString(key: String, defaultValue: String,context: Context): String? {
+fun getString(key: String, defaultValue: String?,context: Context): String? {
     return getDefaultSharedPreferences(context).getString(key, defaultValue)
 }
 

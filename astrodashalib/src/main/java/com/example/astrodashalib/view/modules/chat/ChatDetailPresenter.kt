@@ -7,7 +7,9 @@ import com.example.astrodashalib.data.models.PaytmHashRequestBody
 import com.example.astrodashalib.data.models.PaytmOrderStatusBody
 import com.example.astrodashalib.data.models.PaytmPaymentDetails
 import com.example.astrodashalib.model.CurrentAntardashaFalRequestBody
+import com.example.astrodashalib.model.response.CurrentAntardashaFalResponse
 import com.example.astrodashalib.provider.rest.RestProvider
+import com.example.astrodashalib.utils.Utils
 import rx.android.schedulers.AndroidSchedulers
 import rx.schedulers.Schedulers
 import rx.subscriptions.CompositeSubscription
@@ -30,14 +32,18 @@ class ChatDetailPresenter : ChatDetailContract.Presenter {
         mCompositeSubscription.clear()
     }
 
-    override fun getCurrentAntardashaFalText(currentAntardashaFalRequestBody: CurrentAntardashaFalRequestBody) {
-
-
-        mView?.showLoader()
-        /*mCompositeSubscription.add(RestProvider.getDashaService().getCurrentAntardashaFalText(Constant.KEY_VALUE, userId, userId)
+    override fun getCurrentAntardashaFalText(merchantId: String,currentAntardashaFalRequestBody: CurrentAntardashaFalRequestBody) {
+//        mView?.showLoader()
+        mCompositeSubscription.add(RestProvider.getDashaService().getCurrentAntardashaFalText(merchantId,Utils.KEY_VALUE, currentAntardashaFalRequestBody)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe())*/
+                .subscribe({currentAntardashaFalResponse : CurrentAntardashaFalResponse ->
+                    mView?.dismissLoader()
+                    mView?.onAntarDashaTxtSuccess(currentAntardashaFalResponse.antardashaText)
+                }, {
+//                    mView?.dismissLoader()
+                    mView?.onAntarDashaTxtError()
+                }))
     }
 
     override fun getCrmUserId(userId:String) {
@@ -52,7 +58,7 @@ class ChatDetailPresenter : ChatDetailContract.Presenter {
                             mView?.let {
                                 it.setCrmId(crmUser.id)
                                 it.dismissLoader()
-                                it.startFayeService()
+                                it.startChatServices()
                             }
                         } else
                             mView?.let {

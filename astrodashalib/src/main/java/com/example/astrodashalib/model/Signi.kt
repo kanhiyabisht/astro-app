@@ -1,8 +1,9 @@
 package com.example.astrodashalib.model
 
 import com.google.gson.annotations.SerializedName
+import java.io.Serializable
 
-class Signi {
+class Signi : Serializable {
 
     @SerializedName("rule")
     var rule: Int = 0

@@ -7,13 +7,11 @@ import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.LinearLayoutManager
 import android.util.Log
-import android.view.ActionMode
 import android.view.Gravity
 import android.view.View
 import com.example.astrodashalib.*
 import com.example.astrodashalib.chat.messageController.MessageControllerFactory
 import com.example.astrodashalib.chat.messageController.MessageControllerInterface
-import com.example.astrodashalib.data.GooglePaymentDetails
 import com.example.astrodashalib.data.models.*
 import com.example.astrodashalib.generic.GenericCallback
 import com.example.astrodashalib.generic.GenericQueryCallback
@@ -22,8 +20,6 @@ import com.example.astrodashalib.localDB.DbConstants
 import com.example.astrodashalib.model.CurrentAntardashaFalRequestBody
 import com.example.astrodashalib.service.device.DeviceIdService
 import com.example.astrodashalib.service.faye.FayeIntentService
-import com.example.astrodashalib.util.IabBroadcastReceiver
-import com.example.astrodashalib.util.IabHelper
 import com.example.astrodashalib.utils.BaseConfiguration.*
 import com.example.astrodashalib.view.adapter.ChatAdapter
 import com.example.astrodashalib.view.adapter.SimpleDialogAdapter
@@ -64,6 +60,8 @@ class ChatDetailActivity : AppCompatActivity(), ChatDetailContract.View, ChatAda
             DialogListOption("Paytm", R.drawable.paytm_icon)
     )
 
+    var antarDashaFalText: String? = null
+
     override fun onCreate(savedInstanceState: Bundle?) {
         val style = intent.getIntExtra(STYLE, 0)
         setTheme(style)
@@ -76,6 +74,7 @@ class ChatDetailActivity : AppCompatActivity(), ChatDetailContract.View, ChatAda
         initaliseChatUsersData()
         loginUserId = getUserId(applicationContext)
         chatUserId = getCrmUserId(applicationContext)
+        antarDashaFalText = getAntardashaFal(loginUserId?:"",applicationContext)
 
         when {
             loginUserId.equals("-1") -> {
@@ -90,6 +89,7 @@ class ChatDetailActivity : AppCompatActivity(), ChatDetailContract.View, ChatAda
             else -> {
                 progress_view_ll.visible()
                 chatRecyclerView.gone()
+                startChatServices()
             }
         }
 
@@ -111,10 +111,6 @@ class ChatDetailActivity : AppCompatActivity(), ChatDetailContract.View, ChatAda
                     chat_edit_text.setText("")
                 }
             }
-
-            if (getUserModel(getUserId(applicationContext), applicationContext) != null)
-                onUserDataChange()
-
         } catch (e: Exception) {
             e.printStackTrace()
         }
@@ -133,16 +129,8 @@ class ChatDetailActivity : AppCompatActivity(), ChatDetailContract.View, ChatAda
         setPhoneNumber(phone, applicationContext)
         setUserId(userId, applicationContext)
         setCrmUserId(crmUserId, applicationContext)
-        setUserModel(userId, Gson().toJson(userModel), applicationContext);
-    }
-
-    fun onUserDataChange() {
-        loginUserId = getUserId(applicationContext)
-
-        if (getCrmUserId(applicationContext).isEmpty())
-            mPresenter?.getCrmUserId(getUserId(applicationContext))
-        else
-            startFayeService()
+        setUserModel(userId, Gson().toJson(userModel), applicationContext)
+        antarDashaFalText = getAntardashaFal(userId,applicationContext)
     }
 
     fun showPaymentDialog() {
@@ -318,12 +306,26 @@ class ChatDetailActivity : AppCompatActivity(), ChatDetailContract.View, ChatAda
         super.onStart()
         inBackground = false
         if (!loginUserId.equals("-1") && !chatUserId.isNullOrEmpty())
-            updateRecievedChatStatus(true, true)
+            if (antarDashaFalText.isNullOrEmpty()) {
+                currentAntardashaFalRequestBody?.let { mPresenter?.getCurrentAntardashaFalText("",it) }
+            } else
+                updateRecievedChatStatus(true, true)
         else {
             chatModelList = ArrayList()
             val list: ArrayList<ChatModel> = ArrayList()
             executeInsertDatesTask(list, false, false)
         }
+    }
+
+
+    override fun onAntarDashaTxtSuccess(antarDashaTxt: String) {
+        this.antarDashaFalText = antarDashaTxt
+        setAntardashaFal(loginUserId?:"",antarDashaTxt,applicationContext)
+        updateRecievedChatStatus(true,true)
+    }
+
+    override fun onAntarDashaTxtError() {
+        updateRecievedChatStatus(true,true)
     }
 
     fun updateRecievedChatStatus(isScreenOpenFirstTime: Boolean, shouldFetchList: Boolean) {
@@ -394,22 +396,17 @@ class ChatDetailActivity : AppCompatActivity(), ChatDetailContract.View, ChatAda
                 val todayDateText: String = simpleDateFormat.format(todayDate);
 
                 if (isUserLogin) {
+                    var timestamp = DateTimeUtil.getCurrentTimestampSeconds().toDouble()
                     if (initialChatArrayList.isEmpty()) {
-                        val welcomeChatModel = ChatModel.getWelcomeChatModel(DateTimeUtil.getCurrentTimestampSeconds().toDouble(), chatDetailActivity?.loginUserId)
-                        initialChatArrayList.add(0, welcomeChatModel)
-
-                        val loginChatModel = ChatModel.getLoginChatModel(DateTimeUtil.getCurrentTimestampSeconds().toDouble(), chatDetailActivity?.loginUserId)
-                        initialChatArrayList.add(1, loginChatModel)
-
+                        initialChatArrayList.add(0, ChatModel.getWelcomeChatModel(timestamp, chatDetailActivity?.loginUserId))
+                        initialChatArrayList.add(1, ChatModel.getLoginChatModel(timestamp, chatDetailActivity?.loginUserId))
                     } else {
                         Collections.sort(initialChatArrayList) { lhs, rhs -> if (lhs.sentTimestamp < rhs.sentTimestamp) -1 else 1 }
-                        val timestamp = initialChatArrayList[0].sentTimestamp
-                        val welcomeChatModel = ChatModel.getWelcomeChatModel(timestamp, chatDetailActivity?.loginUserId)
-                        initialChatArrayList.add(0, welcomeChatModel)
-
-                        val loginChatModel = ChatModel.getLoginChatModel(timestamp, chatDetailActivity?.loginUserId)
-                        initialChatArrayList.add(1, loginChatModel)
+                        timestamp = initialChatArrayList[0].sentTimestamp
+                        initialChatArrayList.add(0, ChatModel.getWelcomeChatModel(timestamp, chatDetailActivity?.loginUserId))
+                        initialChatArrayList.add(1, ChatModel.getLoginChatModel(timestamp, chatDetailActivity?.loginUserId))
                     }
+                    chatDetailActivity?.antarDashaFalText?.let{initialChatArrayList.add(2, ChatModel.getAntardashaChatModel(it,timestamp,chatDetailActivity?.loginUserId))}
                 } else {
                     val timestamp = DateTimeUtil.getCurrentTimestampSeconds().toDouble()
                     val welcomeChatModel = ChatModel.getWelcomeChatModel(timestamp, chatDetailActivity?.loginUserId)
@@ -518,8 +515,6 @@ class ChatDetailActivity : AppCompatActivity(), ChatDetailContract.View, ChatAda
             notifyDataSetChangedToAdpater(chatAdapter!!)
         else
             initializeChatRecyclerView(this)
-
-
         chatRecyclerView.visible()
         progress_view_ll.gone()
     }
@@ -631,12 +626,13 @@ class ChatDetailActivity : AppCompatActivity(), ChatDetailContract.View, ChatAda
         }
     }
 
-    override fun startFayeService() {
+    override fun startChatServices() {
         if (getDeviceId(applicationContext).isEmpty())
             DeviceIdService.startService(this)
         chatUserId = getCrmUserId(applicationContext)
         FayeIntentService.startFayeService(this)
-        updateRecievedChatStatus(true, true)
+        if (!antarDashaFalText.isNullOrEmpty())
+            updateRecievedChatStatus(true, true)
     }
 
 
@@ -648,7 +644,6 @@ class ChatDetailActivity : AppCompatActivity(), ChatDetailContract.View, ChatAda
     override fun setCrmId(id: String) {
         setCrmUserId(id, applicationContext)
     }
-
 
 
     override fun onUserUpdateSuccess(userModel: UserModel) {

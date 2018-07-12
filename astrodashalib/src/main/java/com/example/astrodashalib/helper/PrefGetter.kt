@@ -33,6 +33,7 @@ val NEXT_ANTAR_REMEDY_KEY = "next_antar_remedy"
 val GOOD_PREDICTION_REMEDY_KEY = "good_prediction_remedy"
 val BAD_PREDICTION_REMEDY_KEY = "bad_prediction_remedy"
 val COMPLEX_REMEDY_KEY = "complex_remedy"
+val ANTARDASHA_FAL_KEY = "antardasha_fal"
 
 fun getSimpleRemediesCateogryQuestionAnswerListKey(userKey: String): String = SIMPLE_REMEDIES_CATEGORY_QUESTION_ANSWER_LIST_KEY + "_" + userKey
 
@@ -267,4 +268,16 @@ fun setFreeQuestionCount(count: Int,context: Context) {
 
 fun getFreeQuestionCount(context: Context): Int {
     return getInt(FREE_QUESTION_COUNT, 1,context)
+}
+
+fun getAntardashaFalKey(userId: String): String = ANTARDASHA_FAL_KEY + "_" + userId
+
+fun setAntardashaFal(userKey: String, antardashaFal: String,context: Context) {
+    val antardashaFalKey = getAntardashaFalKey(userKey)
+    set(antardashaFalKey, antardashaFal,context)
+}
+
+fun getAntardashaFal(userKey: String,context: Context): String? {
+    val antardashaFalKey = getAntardashaFalKey(userKey)
+    return getString(antardashaFalKey, null,context)
 }

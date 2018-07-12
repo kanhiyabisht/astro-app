@@ -268,6 +268,22 @@ public class ChatModel implements Serializable, ModelInterface, SqlModelInterfac
         return null;
     }
 
+    @NonNull
+    public static ChatModel getAntardashaChatModel(String antarDashaTxt, Double timestamp, String loginUserId) {
+        try {
+            ChatModel chatModel = new ChatModel(antarDashaTxt, loginUserId, ChatDetailActivity.chatUserId, "system", timestamp, true);
+            chatModel.myId = loginUserId;
+            chatModel.buddyId = "systemId";
+            chatModel.chatStatus = DbConstants.STATUS_READ;
+            chatModel.readTimestamp = timestamp;
+            chatModel.deliveredTimestamp = timestamp;
+            return chatModel;
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+        return null;
+    }
+
     @Override
     public ContentValues getContentValues(JSONObject jsonObject) {
         ContentValues values = new ContentValues();

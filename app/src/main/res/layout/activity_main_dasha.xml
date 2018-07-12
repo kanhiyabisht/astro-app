@@ -15,260 +15,95 @@
             android:layout_height="match_parent"
             android:orientation="vertical">
 
-            <android.support.v7.widget.CardView
-                android:id="@+id/horoscope_cv"
+            <Button
+                android:id="@+id/chatBtn"
                 android:layout_width="match_parent"
-                android:layout_height="30dp"
+                android:layout_height="wrap_content"
                 android:layout_margin="10dp"
-                android:backgroundTint="@color/colorAccent">
+                android:background="@color/colorAccent"
+                android:text="Chat screen"
+                android:textColor="@color/white" />
 
-                <RelativeLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:orientation="horizontal">
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_centerHorizontal="true"
-                        android:layout_centerVertical="true"
-                        android:gravity="center"
-                        android:text="Horoscope"
-                        android:textAlignment="center"
-                        android:textColor="@color/white"
-                        android:textSize="15dp" />
-
-                </RelativeLayout>
-            </android.support.v7.widget.CardView>
-
-
-            <android.support.v7.widget.CardView
-                android:id="@+id/current_mahadasha_cv"
+            <Button
+                android:id="@+id/horoscopeBtn"
                 android:layout_width="match_parent"
-                android:layout_height="30dp"
+                android:layout_height="wrap_content"
                 android:layout_margin="10dp"
+                android:background="@color/colorAccent"
+                android:text="Horoscope"
+                android:textColor="@color/white" />
 
-                android:backgroundTint="@color/colorAccent">
-
-                <RelativeLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:orientation="horizontal">
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_centerHorizontal="true"
-                        android:layout_centerVertical="true"
-                        android:gravity="center"
-                        android:text="Current Mahadasha"
-                        android:textAlignment="center"
-                        android:textColor="@color/white"
-                        android:textSize="15dp" />
-
-
-                </RelativeLayout>
-            </android.support.v7.widget.CardView>
-
-            <android.support.v7.widget.CardView
-                android:id="@+id/current_antardasha_cv"
+            <Button
+                android:id="@+id/currentMahadashaBtn"
                 android:layout_width="match_parent"
-                android:layout_height="30dp"
+                android:layout_height="wrap_content"
                 android:layout_margin="10dp"
+                android:background="@color/colorAccent"
+                android:text="Current Mahadasha"
+                android:textColor="@color/white" />
 
-                android:backgroundTint="@color/colorAccent">
-
-                <RelativeLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:orientation="horizontal">
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_centerHorizontal="true"
-                        android:layout_centerVertical="true"
-                        android:gravity="center"
-                        android:text="Current Antardasha"
-                        android:textAlignment="center"
-                        android:textColor="@color/white"
-                        android:textSize="15dp" />
-
-
-                </RelativeLayout>
-            </android.support.v7.widget.CardView>
-
-            <android.support.v7.widget.CardView
-                android:id="@+id/yog_yuti_cv"
+            <Button
+                android:id="@+id/currentAntarDashaBtn"
                 android:layout_width="match_parent"
-                android:layout_height="30dp"
+                android:layout_height="wrap_content"
                 android:layout_margin="10dp"
+                android:background="@color/colorAccent"
+                android:text="Current Antardasha"
+                android:textColor="@color/white" />
 
-                android:backgroundTint="@color/colorAccent">
-
-                <RelativeLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:orientation="horizontal">
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_centerHorizontal="true"
-                        android:layout_centerVertical="true"
-                        android:gravity="center"
-                        android:text="Yog Yuti"
-                        android:textAlignment="center"
-                        android:textColor="@color/white"
-                        android:textSize="15dp" />
-
-
-                </RelativeLayout>
-            </android.support.v7.widget.CardView>
-
-
-            <android.support.v7.widget.CardView
-                android:id="@+id/health_cv"
+            <Button
+                android:id="@+id/yogYutiBtn"
                 android:layout_width="match_parent"
-                android:layout_height="30dp"
+                android:layout_height="wrap_content"
                 android:layout_margin="10dp"
+                android:background="@color/colorAccent"
+                android:text="Yog Yuti"
+                android:textColor="@color/white" />
 
-                android:backgroundTint="@color/colorAccent">
-
-                <RelativeLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:orientation="horizontal">
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_centerHorizontal="true"
-                        android:layout_centerVertical="true"
-                        android:gravity="center"
-                        android:text="Health"
-                        android:textAlignment="center"
-                        android:textColor="@color/white"
-                        android:textSize="15dp" />
-
-
-                </RelativeLayout>
-            </android.support.v7.widget.CardView>
-
-            <android.support.v7.widget.CardView
-                android:id="@+id/married_life_cv"
+            <Button
+                android:id="@+id/healthBtn"
                 android:layout_width="match_parent"
-                android:layout_height="30dp"
+                android:layout_height="wrap_content"
                 android:layout_margin="10dp"
+                android:background="@color/colorAccent"
+                android:text="Health"
+                android:textColor="@color/white" />
 
-                android:backgroundTint="@color/colorAccent">
-
-                <RelativeLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:orientation="horizontal">
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_centerHorizontal="true"
-                        android:layout_centerVertical="true"
-                        android:gravity="center"
-                        android:text="Married Life"
-                        android:textAlignment="center"
-                        android:textColor="@color/white"
-                        android:textSize="15dp" />
-
-
-                </RelativeLayout>
-            </android.support.v7.widget.CardView>
-
-
-            <android.support.v7.widget.CardView
-                android:id="@+id/occupation_cv"
+            <Button
+                android:id="@+id/marriedLifeBtn"
                 android:layout_width="match_parent"
-                android:layout_height="30dp"
+                android:layout_height="wrap_content"
                 android:layout_margin="10dp"
+                android:background="@color/colorAccent"
+                android:text="Married Life"
+                android:textColor="@color/white" />
 
-                android:backgroundTint="@color/colorAccent">
-
-                <RelativeLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:orientation="horizontal">
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_centerHorizontal="true"
-                        android:layout_centerVertical="true"
-                        android:gravity="center"
-                        android:text="Occupation"
-                        android:textAlignment="center"
-                        android:textColor="@color/white"
-                        android:textSize="15dp" />
-
-
-                </RelativeLayout>
-            </android.support.v7.widget.CardView>
-
-
-            <android.support.v7.widget.CardView
-                android:id="@+id/parents_cv"
+            <Button
+                android:id="@+id/occupationBtn"
                 android:layout_width="match_parent"
-                android:layout_height="30dp"
+                android:layout_height="wrap_content"
                 android:layout_margin="10dp"
+                android:background="@color/colorAccent"
+                android:text="Occupation"
+                android:textColor="@color/white" />
 
-                android:backgroundTint="@color/colorAccent">
-
-                <RelativeLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:orientation="horizontal">
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_centerHorizontal="true"
-                        android:layout_centerVertical="true"
-                        android:gravity="center"
-                        android:text="Parents"
-                        android:textAlignment="center"
-                        android:textColor="@color/white"
-                        android:textSize="15dp" />
-
-
-                </RelativeLayout>
-            </android.support.v7.widget.CardView>
-
-
-            <android.support.v7.widget.CardView
-                android:id="@+id/children_cv"
+            <Button
+                android:id="@+id/parentsBtn"
                 android:layout_width="match_parent"
-                android:layout_height="30dp"
+                android:layout_height="wrap_content"
                 android:layout_margin="10dp"
+                android:background="@color/colorAccent"
+                android:text="Parents"
+                android:textColor="@color/white" />
 
-                android:backgroundTint="@color/colorAccent">
-
-                <RelativeLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:orientation="horizontal">
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_centerHorizontal="true"
-                        android:layout_centerVertical="true"
-                        android:gravity="center"
-                        android:text="Children"
-                        android:textAlignment="center"
-                        android:textColor="@color/white"
-                        android:textSize="15dp" />
-
-
-                </RelativeLayout>
-            </android.support.v7.widget.CardView>
+            <Button
+                android:id="@+id/childrenBtn"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp"
+                android:background="@color/colorAccent"
+                android:text="Children"
+                android:textColor="@color/white" />
 
 
         </LinearLayout>

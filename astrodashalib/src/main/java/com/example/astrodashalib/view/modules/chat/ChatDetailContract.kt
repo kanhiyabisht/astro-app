@@ -12,7 +12,9 @@ interface ChatDetailContract {
     interface View : BaseView {
         fun showLoader()
         fun dismissLoader()
-        fun startFayeService()
+        fun startChatServices()
+        fun onAntarDashaTxtSuccess(antarDashaTxt: String)
+        fun onAntarDashaTxtError()
         fun onHashError()
         fun onCrmUserError()
         fun setCrmId(id:String)
@@ -30,6 +32,6 @@ interface ChatDetailContract {
         fun getPaytmOrderStatus(paytmOrderStatusBody: PaytmOrderStatusBody, paytmPaymentDetails: PaytmPaymentDetails)
         fun getCrmUserId(userId:String)
         fun postPaymentDetails(paymentDetail: PaymentDetail, purchaseTimestamp: Long,userId:String)
-        fun getCurrentAntardashaFalText(currentAntardashaFalRequestBody: CurrentAntardashaFalRequestBody)
+        fun getCurrentAntardashaFalText(merchantId: String,currentAntardashaFalRequestBody: CurrentAntardashaFalRequestBody)
     }
 }
