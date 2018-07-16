@@ -49,6 +49,7 @@ class ChatDetailActivity : AppCompatActivity(), ChatDetailContract.View, ChatAda
     var currentAntardashaFalRequestBody: CurrentAntardashaFalRequestBody? = null
     var mInsertDates: InsertDates? = null
     var recentDateTxt = ""
+    var isAntarDashaLoading = false
     var reciever: ChatReciever? = null
     var isProgressShowing = false
     var mPresenter: ChatDetailContract.Presenter? = null
@@ -72,9 +73,6 @@ class ChatDetailActivity : AppCompatActivity(), ChatDetailContract.View, ChatAda
         mPresenter?.attachView(this)
         currentAntardashaFalRequestBody = intent.getSerializableExtra(ANTAR_DASHA_REQUEST_BODY) as CurrentAntardashaFalRequestBody?
         initaliseChatUsersData()
-        loginUserId = getUserId(applicationContext)
-        chatUserId = getCrmUserId(applicationContext)
-        antarDashaFalText = getAntardashaFal(loginUserId?:"",applicationContext)
 
         when {
             loginUserId.equals("-1") -> {
@@ -134,7 +132,9 @@ class ChatDetailActivity : AppCompatActivity(), ChatDetailContract.View, ChatAda
         setUserId(userId, applicationContext)
         setCrmUserId(crmUserId, applicationContext)
         setUserModel(userId, Gson().toJson(userModel), applicationContext)
-        antarDashaFalText = getAntardashaFal(userId,applicationContext)
+        loginUserId = getUserId(applicationContext)
+        chatUserId = getCrmUserId(applicationContext)
+        antarDashaFalText = getAntardashaFal(loginUserId?:"",applicationContext)
     }
 
     fun showPaymentDialog() {
@@ -311,7 +311,10 @@ class ChatDetailActivity : AppCompatActivity(), ChatDetailContract.View, ChatAda
         inBackground = false
         if (!loginUserId.equals("-1") && !chatUserId.isNullOrEmpty())
             if (antarDashaFalText.isNullOrEmpty()) {
-                currentAntardashaFalRequestBody?.let { mPresenter?.getCurrentAntardashaFalText("",it) }
+                currentAntardashaFalRequestBody?.let {
+                    isAntarDashaLoading = true
+                    mPresenter?.getCurrentAntardashaFalText("",it)
+                }
             } else
                 updateRecievedChatStatus(true, true)
         else {
@@ -323,12 +326,14 @@ class ChatDetailActivity : AppCompatActivity(), ChatDetailContract.View, ChatAda
 
 
     override fun onAntarDashaTxtSuccess(antarDashaTxt: String) {
+        isAntarDashaLoading = false
         this.antarDashaFalText = antarDashaTxt
         setAntardashaFal(loginUserId?:"",antarDashaTxt,applicationContext)
         updateRecievedChatStatus(true,true)
     }
 
     override fun onAntarDashaTxtError() {
+        isAntarDashaLoading = false
         updateRecievedChatStatus(true,true)
     }
 

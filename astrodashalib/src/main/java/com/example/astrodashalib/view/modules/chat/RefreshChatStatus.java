@@ -16,7 +16,7 @@ public class RefreshChatStatus implements ChatBroadcastInterface {
         try {
             Log.e("RefreshChatStatus","");
             Double readTimestamp = b.getDouble("readTimestamp");
-            if (readTimestamp != 0)
+            if (readTimestamp != 0 && !chatDetailActivity.isAntarDashaLoading())
                 chatDetailActivity.fetchChatFromDb(false);
         } catch (Exception e) {
             e.printStackTrace();
