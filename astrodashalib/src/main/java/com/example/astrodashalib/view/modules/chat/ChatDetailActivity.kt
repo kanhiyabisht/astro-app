@@ -111,6 +111,10 @@ class ChatDetailActivity : AppCompatActivity(), ChatDetailContract.View, ChatAda
                     chat_edit_text.setText("")
                 }
             }
+
+            back_arrow_iv.setOnClickListener {
+                onBackPressed()
+            }
         } catch (e: Exception) {
             e.printStackTrace()
         }
