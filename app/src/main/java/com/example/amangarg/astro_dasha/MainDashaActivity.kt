@@ -36,7 +36,7 @@ class MainDashaActivity : AppCompatActivity() {
         chatBtn.setOnClickListener {
             val style = R.style.AppTheme1
             val currentAntardashaFalRequestBody = CurrentAntardashaFalRequestBody(mainMahadashaListValue,onlineResultValue,paramForPerskvValue,paramForProdValue,kpChartValue,cuspHouseValue)
-            startActivity(ChatDetailActivity.createIntent(this@MainDashaActivity,style,"him.phogat123@gmail.com","9212200005","Himanshu",currentAntardashaFalRequestBody))
+            startActivity(ChatDetailActivity.createIntent(this@MainDashaActivity,style,"himanshu@delvelogic.com","9212223455","Himanshu",currentAntardashaFalRequestBody))
         }
 
         horoscopeBtn.setOnClickListener {
