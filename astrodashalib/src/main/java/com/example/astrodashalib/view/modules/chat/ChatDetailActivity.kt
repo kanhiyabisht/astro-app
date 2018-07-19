@@ -73,7 +73,7 @@ class ChatDetailActivity : AppCompatActivity(), ChatDetailContract.View, ChatAda
         mPresenter?.attachView(this)
         currentAntardashaFalRequestBody = intent.getSerializableExtra(ANTAR_DASHA_REQUEST_BODY) as CurrentAntardashaFalRequestBody?
         initaliseChatUsersData()
-
+        showInternetConnectionView()
         when {
             loginUserId.equals("-1") -> {
                 progress_view_ll.gone()
@@ -577,8 +577,9 @@ class ChatDetailActivity : AppCompatActivity(), ChatDetailContract.View, ChatAda
         broadcastRecieverHashMap.put(ACTION_ADD_NEW_CHAT, AddNewChat())
         broadcastRecieverHashMap.put(ACTION_NETWORK_CHANGE, NetworkChange())
         broadcastRecieverHashMap.put(ACTION_REFRESH_CHAT_LIST, RefreshChatScreen())
+        broadcastRecieverHashMap.put(CONNECTIVITY_CHANGE, ConnectivityChangePreN())
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N)
-            broadcastRecieverHashMap.put(CONNECTIVITY_ACTION, ConnectivityChange())
+            broadcastRecieverHashMap.put(CONNECTIVITY_ACTION_N, ConnectivityChange())
 
         reciever = ChatReciever(this);
         val filter = IntentFilter()
@@ -587,8 +588,9 @@ class ChatDetailActivity : AppCompatActivity(), ChatDetailContract.View, ChatAda
             addAction(ACTION_ADD_NEW_CHAT)
             addAction(ACTION_NETWORK_CHANGE)
             addAction(ACTION_REFRESH_CHAT_LIST)
+            addAction(CONNECTIVITY_CHANGE)
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N)
-                addAction(CONNECTIVITY_ACTION)
+                addAction(CONNECTIVITY_ACTION_N)
         }
         registerReceiver(reciever, filter);
     }
@@ -599,7 +601,16 @@ class ChatDetailActivity : AppCompatActivity(), ChatDetailContract.View, ChatAda
         } catch (e: Exception) {
             e.printStackTrace()
         }
+    }
 
+    fun showInternetConnectionView() {
+        noInternetConnectionTv.gone()
+        bottomlayout.visible()
+    }
+
+    fun showNoConnectionView() {
+        noInternetConnectionTv.visible()
+        bottomlayout.gone()
     }
 
     override fun onStop() {
@@ -736,7 +747,10 @@ class ChatDetailActivity : AppCompatActivity(), ChatDetailContract.View, ChatAda
         val ACTION_NETWORK_CHANGE = "NetworkChange"
 
         @JvmField
-        val CONNECTIVITY_ACTION = "android.net.conn.CONNECTIVITY_CHANGE"
+        val CONNECTIVITY_ACTION_N = "android.net.conn.CONNECTIVITY_CHANGE"
+
+        @JvmField
+        val CONNECTIVITY_CHANGE = "CONNECTION_CHANGE"
 
         @JvmField
         var inBackground = true

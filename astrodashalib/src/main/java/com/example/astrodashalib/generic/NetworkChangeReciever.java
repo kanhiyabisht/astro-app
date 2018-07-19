@@ -5,8 +5,10 @@ import android.content.Context;
 import android.content.Intent;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.os.Bundle;
 
 import com.example.astrodashalib.service.faye.FayeIntentService;
+import com.example.astrodashalib.view.modules.chat.ChatDetailActivity;
 
 
 /**
@@ -23,8 +25,16 @@ public class NetworkChangeReciever extends BroadcastReceiver {
         NetworkInfo activeNetwork = cm.getActiveNetworkInfo();
         boolean isConnected = activeNetwork != null && activeNetwork.isConnected();
 
-        if (isConnected)
+        Intent i = new Intent(ChatDetailActivity.CONNECTIVITY_CHANGE);
+        Bundle bundle = new Bundle();
+        if (isConnected) {
             fetchDataFromServer(context);
+            bundle.putBoolean("isNetworkConnected", true);
+        }else
+            bundle.putBoolean("isNetworkConnected", false);
+
+        i.putExtras(bundle);
+        context.sendBroadcast(i);
     }
 
     protected void fetchDataFromServer(Context context) {

@@ -52,8 +52,6 @@ class ChatAdapter(val context: Context, var onItemClickListener: OnItemClickList
                 you.gone()
                 date_tv.gone()
                 me.visible()
-                meNameTv.visible()
-                meNameTv.text = "sent by you"
                 youNameTv.gone()
                 chat_me.setText(chat.value)
                 when (chat.chatStatus) {
@@ -80,7 +78,6 @@ class ChatAdapter(val context: Context, var onItemClickListener: OnItemClickList
             } else {
                 you.visible()
                 date_tv.gone()
-                meNameTv.gone()
                 youNameTv.visible()
                 youNameTv.text = if (chat.fromUserName.equals("system")) "sent by system" else "sent by disciple"
                 me.gone()

@@ -44,4 +44,18 @@ public class Place implements Serializable {
     @SerializedName("timeZone")
     public String timeZone;
 
+    @Override
+    public String toString() {
+        return place;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (null != o && o instanceof String) {
+            return ((String) o).equals(place);
+        }
+        return super.equals(o);
+    }
+
+
 }

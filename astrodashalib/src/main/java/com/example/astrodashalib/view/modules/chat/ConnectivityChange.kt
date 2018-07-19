@@ -11,7 +11,10 @@ import com.example.astrodashalib.service.faye.FayeIntentService
 class ConnectivityChange :ChatBroadcastInterface {
 
     override fun exec(activity: ChatDetailActivity, ctx: Context, b: Bundle) {
-        if(ctx.isNetworkAvailable())
+        if(ctx.isNetworkAvailable()) {
             FayeIntentService.startFayeService(ctx)
+            activity.showInternetConnectionView()
+        } else
+            activity.showNoConnectionView()
     }
 }
