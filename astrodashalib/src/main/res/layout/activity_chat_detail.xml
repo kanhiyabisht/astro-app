@@ -121,6 +121,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:minHeight="60dp"
+            android:visibility="gone"
             android:text="नेटवर्क उपलब्ध नहीं है,\nकृपया नेटवर्क कनेक्शन चेक करें"
             android:textSize="18sp"
             android:textStyle="bold"

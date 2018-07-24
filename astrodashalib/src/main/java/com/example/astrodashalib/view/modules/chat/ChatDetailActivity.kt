@@ -118,6 +118,12 @@ class ChatDetailActivity : AppCompatActivity(), ChatDetailContract.View, ChatAda
         }
     }
 
+
+    /*fun showAstroLoader() {
+        val handler = Handler()
+
+    }*/
+
     private fun initaliseChatUsersData() {
         val userName = intent.getStringExtra(NAME) ?: ""
         val email = intent.getStringExtra(EMAIL) ?: ""
