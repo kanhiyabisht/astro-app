@@ -404,23 +404,20 @@ class ChatDetailActivity : AppCompatActivity(), ChatDetailContract.View, ChatAda
         override fun doInBackground(vararg params: Void?): Void? {
             var result: Void? = null
             try {
-                this.initialChatArrayList.clear();
-                this.initialChatArrayList.addAll(chatArrayList);
+                initialChatArrayList.clear();
+                initialChatArrayList.addAll(chatArrayList);
                 val todayDate: Date = Date()
                 val simpleDateFormat: SimpleDateFormat = SimpleDateFormat("MMMM dd");
                 val todayDateText: String = simpleDateFormat.format(todayDate);
 
                 if (isUserLogin) {
                     var timestamp = DateTimeUtil.getCurrentTimestampSeconds().toDouble()
-                    if (initialChatArrayList.isEmpty()) {
-                        initialChatArrayList.add(0, ChatModel.getWelcomeChatModel(timestamp, chatDetailActivity?.loginUserId))
-                        initialChatArrayList.add(1, ChatModel.getLoginChatModel(timestamp, chatDetailActivity?.loginUserId))
-                    } else {
+                    if(initialChatArrayList.isNotEmpty()){
                         Collections.sort(initialChatArrayList) { lhs, rhs -> if (lhs.sentTimestamp < rhs.sentTimestamp) -1 else 1 }
                         timestamp = initialChatArrayList[0].sentTimestamp
-                        initialChatArrayList.add(0, ChatModel.getWelcomeChatModel(timestamp, chatDetailActivity?.loginUserId))
-                        initialChatArrayList.add(1, ChatModel.getLoginChatModel(timestamp, chatDetailActivity?.loginUserId))
                     }
+                    initialChatArrayList.add(0, ChatModel.getWelcomeChatModel(timestamp, chatDetailActivity?.loginUserId))
+                    initialChatArrayList.add(1, ChatModel.getLoginChatModel(timestamp, chatDetailActivity?.loginUserId))
                     chatDetailActivity?.antarDashaFalText?.let{initialChatArrayList.add(2, ChatModel.getAntardashaChatModel(it,timestamp,chatDetailActivity?.loginUserId))}
                 } else {
                     val timestamp = DateTimeUtil.getCurrentTimestampSeconds().toDouble()
