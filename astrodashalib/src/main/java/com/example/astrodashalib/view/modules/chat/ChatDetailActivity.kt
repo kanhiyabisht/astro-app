@@ -23,6 +23,7 @@ import com.example.astrodashalib.service.faye.FayeIntentService
 import com.example.astrodashalib.utils.BaseConfiguration.*
 import com.example.astrodashalib.view.adapter.ChatAdapter
 import com.example.astrodashalib.view.adapter.SimpleDialogAdapter
+import com.example.astrodashalib.view.modules.pricingPlan.PricingPlanActivity
 import com.example.astrodashalib.view.widgets.dialog.MaterialDialog
 import com.example.astrodashalib.view.widgets.dialog.ProgressDialogFragment
 import com.google.gson.Gson
@@ -42,6 +43,7 @@ import kotlin.collections.ArrayList
 class ChatDetailActivity : AppCompatActivity(), ChatDetailContract.View, ChatAdapter.OnItemClickListener, ChatReciever.ChatRecieverInterface {
 
     var chatModelList: ArrayList<ChatModel> = ArrayList()
+    var checkmessage:String?=null
     var loginUserId: String? = null
     var chatAdapter: ChatAdapter? = null
     var broadcastRecieverHashMap: HashMap<String, ChatBroadcastInterface> = HashMap()
@@ -97,13 +99,17 @@ class ChatDetailActivity : AppCompatActivity(), ChatDetailContract.View, ChatAda
                 if (loginUserId.equals("-1") || chatUserId.isNullOrEmpty()) {
                     toast("Fill birth details")
                 } else if (chat_edit_text.text.toString().trim().isNotEmpty()) {
+
                     if (getFreeQuestionCount(applicationContext) >= 1) {
                         showPaymentDialog()
                         chatModel = messageController?.saveChat(chat_edit_text.text.toString(), chatUserId, "", "")
+                        setFreeQuestionCount(0,applicationContext);
                         coordinator_ll.hideKeyboard()
                     } else {
                         messageController?.sendChat(chat_edit_text.text.toString(), chatUserId, "", "")
-                        setFreeQuestionCount(1, applicationContext)
+                        setFreeQuestionCount(0, applicationContext)
+                        val intent = Intent(this@ChatDetailActivity, PricingPlanActivity::class.java)
+                        startActivity(intent)
                     }
 
                     chat_edit_text.setText("")

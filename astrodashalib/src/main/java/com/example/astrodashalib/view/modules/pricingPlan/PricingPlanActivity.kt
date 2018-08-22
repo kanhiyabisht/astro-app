@@ -49,9 +49,9 @@ class PricingPlanActivity : AppCompatActivity(),PricingPlanContract.View {
         setTheme(style)
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_pricing_plan)
+        //setSupportActionBar(toolbar)
         mPresenter = PricingPlanPresenter()
         mPresenter?.attachView(this)
-        setSupportActionBar(toolbar)
         chatTxt = intent.getStringExtra(CHAT_TXT) ?: ""
         cv1.setOnClickListener {
             pricingPlan=500
